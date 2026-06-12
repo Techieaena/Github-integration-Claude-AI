@@ -1,0 +1,29 @@
+table Dim_Product
+	lineageTag: ab30cc97-615c-47ec-89bf-b573bd3948dd
+	sourceLineageTag: [dbo].[Dim_Product]
+
+	column Product
+		dataType: string
+		lineageTag: dfdadf02-3357-42a1-8e7b-e125b44dc748
+		sourceLineageTag: Product
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Category
+		dataType: string
+		lineageTag: a9e2b6f0-424d-4a2b-b19d-4db3579e8f02
+		sourceLineageTag: Product_Category
+		summarizeBy: none
+		sourceColumn: Product_Category
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Product = entity
+		mode: directLake
+		source
+			entityName: Dim_Product
+			schemaName: dbo
+			expressionSource: 'DirectLake - Current'
+
