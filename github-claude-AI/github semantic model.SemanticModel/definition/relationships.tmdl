@@ -1,0 +1,33 @@
+relationship 101820a4-9a60-83b7-ec9e-0547d826886b
+	fromColumn: sales.ProductKey
+	toColumn: product.ProductKey
+
+relationship fad69bf1-53bb-9e4e-40e1-0f9f5fe29416
+	fromColumn: product.ProductSubcategoryKey
+	toColumn: subcat.ProductSubcategoryKey
+
+relationship 6e05627a-4b66-d698-b0b3-74e2c7298756
+	fromColumn: sales.OrderDate
+	toColumn: calendar.Date
+
+relationship 1201bd85-e8f8-82af-7074-0b318541bcd3
+	isActive: false
+	fromColumn: sales.StockDate
+	toColumn: calendar.Date
+
+relationship d0264b28-0296-0baa-02d5-44c67a4a5c94
+	fromColumn: product.ProductSubcategoryKey
+	toColumn: Merge.ProductSubcategoryKey
+
+relationship 3af3a299-787d-66a4-b18e-95c3daf1d2d3
+	fromColumn: sales.CustomerKey
+	toColumn: customers2026.CustomerKey
+
+relationship 748c58c1-af6c-7814-d5fc-f419f8f601d1
+	fromColumn: returndelta2026.ProductKey
+	toColumn: product.ProductKey
+
+relationship bc898170-3a98-57d2-bc82-043a3d0bd161
+	fromColumn: returndelta2026.ReturnDate
+	toColumn: calendar.Date
+
