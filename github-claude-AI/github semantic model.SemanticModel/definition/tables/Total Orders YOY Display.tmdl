@@ -1,0 +1,20 @@
+table 'Total Orders YOY Display'
+	lineageTag: 3c6002a5-8172-48f4-ad7d-178b18a99f35
+
+	column Column
+		formatString: 0
+		lineageTag: 170244cc-4162-490c-9161-bc613025df8d
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Total Orders YOY Display' = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 518761e38a1e4c448bd686655782896a
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+
