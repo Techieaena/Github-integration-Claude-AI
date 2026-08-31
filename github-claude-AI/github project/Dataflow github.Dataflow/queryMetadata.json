@@ -1,0 +1,84 @@
+{
+  "formatVersion": "202502",
+  "computeEngineSettings": {
+    "allowModernEvaluationEngine": true
+  },
+  "name": "Dataflow github",
+  "queryGroups": [],
+  "documentLocale": "en-US",
+  "queriesMetadata": {
+    "AdventureWorks_Product_Categories csv": {
+      "queryId": "915ca18f-d92f-4846-a65c-970bf2bd839f",
+      "queryName": "AdventureWorks_Product_Categories csv"
+    },
+    "duct_Subcategories csv": {
+      "queryId": "bfe4351a-b735-4822-885e-922617077a54",
+      "queryName": "duct_Subcategories csv"
+    },
+    "Merge": {
+      "queryId": "83df04bc-d1e5-41db-a18c-eb09a4fd7f9c",
+      "queryName": "Merge",
+      "loadEnabled": false
+    },
+    "product": {
+      "queryId": "1b89194e-549b-4a64-98cf-57ac2a8abbfa",
+      "queryName": "product",
+      "loadEnabled": false
+    },
+    "calendar": {
+      "queryId": "89d19bc1-f6c2-4d3c-86a6-e6c2e3a21912",
+      "queryName": "calendar",
+      "loadEnabled": false
+    },
+    "returndelta": {
+      "queryId": "31e67ebc-2d5b-44e3-97ee-c6f75f7684e0",
+      "queryName": "returndelta",
+      "loadEnabled": false
+    },
+    "sales": {
+      "queryId": "312b012a-1396-4952-967d-9310f0778645",
+      "queryName": "sales",
+      "loadEnabled": false
+    },
+    "subcat": {
+      "queryId": "ee732722-62dc-4c1f-947d-660f7870d1c9",
+      "queryName": "subcat",
+      "loadEnabled": false
+    },
+    "customers": {
+      "queryId": "db1edf4f-77ae-4433-b157-47a627f81b15",
+      "queryName": "customers",
+      "loadEnabled": false
+    },
+    "customers_DataDestination": {
+      "queryId": "81c3ff58-c40a-46b6-b51a-36e6aa5a5501",
+      "queryName": "customers_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    },
+    "DefaultDestination": {
+      "queryId": "54ec18b6-c647-49ca-b3a1-acbe18f96fd3",
+      "queryName": "DefaultDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    },
+    "returndelta_DataDestination": {
+      "queryId": "d8a08efe-b890-42c9-b1dc-083af7cfbd6f",
+      "queryName": "returndelta_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    }
+  },
+  "connections": [
+    {
+      "path": "Lakehouse",
+      "kind": "Lakehouse",
+      "connectionId": "{\"ClusterId\":\"5a707610-fd69-4bb4-b6b0-2d382a206f96\",\"DatasourceId\":\"b6001a0d-f938-4b61-b416-e536d761c4af\"}"
+    },
+    {
+      "path": "https://tataconsultancy392.sharepoint.com",
+      "kind": "SharePoint",
+      "connectionId": "{\"ClusterId\":\"5a707610-fd69-4bb4-b6b0-2d382a206f96\",\"DatasourceId\":\"dabcd7b0-22f7-4366-bc2c-e9d8f2de7455\"}"
+    }
+  ]
+}
