@@ -1,0 +1,159 @@
+table Measures
+	lineageTag: 7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d
+	isHidden: true
+
+	measure Total_Revenue = SUM(FactSales[net_sales])
+		lineageTag: 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
+		formatString: $#,##0.00
+		displayFolder: Financial Metrics
+
+	measure Total_Gross_Sales = SUM(FactSales[gross_sales])
+		lineageTag: 2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e
+		formatString: $#,##0.00
+		displayFolder: Financial Metrics
+
+	measure Total_Profit = SUM(FactSales[profit])
+		lineageTag: 3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f
+		formatString: $#,##0.00
+		displayFolder: Financial Metrics
+
+	measure Total_Discount = SUM(FactSales[discount_amount])
+		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+		formatString: $#,##0.00
+		displayFolder: Financial Metrics
+
+	measure Total_Tax = SUM(FactSales[tax_amount])
+		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
+		formatString: $#,##0.00
+		displayFolder: Financial Metrics
+
+	measure Total_Shipping = SUM(FactSales[shipping_cost])
+		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
+		formatString: $#,##0.00
+		displayFolder: Financial Metrics
+
+	measure Total_Cost = SUM(FactSales[product_cost])
+		lineageTag: 7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d
+		formatString: $#,##0.00
+		displayFolder: Financial Metrics
+
+	measure Profit_Margin_Percent = DIVIDE([Total_Profit], [Total_Revenue], 0)
+		lineageTag: 8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e
+		formatString: 0.00%
+		displayFolder: Financial Metrics
+
+	measure Total_Orders = COUNTROWS(FactSales)
+		lineageTag: 9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f
+		formatString: 0
+		displayFolder: Order Metrics
+
+	measure Total_Items_Sold = SUM(FactSales[quantity])
+		lineageTag: 0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a
+		formatString: 0
+		displayFolder: Order Metrics
+
+	measure Average_Order_Value = DIVIDE([Total_Revenue], [Total_Orders], 0)
+		lineageTag: 1e2f3a4b-5c6d-7e8f-9a0b-1c2d3e4f5a6b
+		formatString: $#,##0.00
+		displayFolder: Order Metrics
+
+	measure Average_Items_Per_Order = DIVIDE([Total_Items_Sold], [Total_Orders], 0)
+		lineageTag: 2f3a4b5c-6d7e-8f9a-0b1c-2d3e4f5a6b7c
+		formatString: 0.00
+		displayFolder: Order Metrics
+
+	measure Unique_Customers = DISTINCTCOUNT(FactSales[customer_id])
+		lineageTag: 3a4b5c6d-7e8f-9a0b-1c2d-3e4f5a6b7c8d
+		formatString: 0
+		displayFolder: Customer Metrics
+
+	measure Repeat_Purchase_Count = CALCULATE(DISTINCTCOUNT(FactSales[customer_id]), FILTER(ALL(FactSales), FactSales[is_repeat_customer] = "True"))
+		lineageTag: 4b5c6d7e-8f9a-0b1c-2d3e-4f5a6b7c8d9e
+		formatString: 0
+		displayFolder: Customer Metrics
+
+	measure Repeat_Customer_Rate = DIVIDE([Repeat_Purchase_Count], [Unique_Customers], 0)
+		lineageTag: 5c6d7e8f-9a0b-1c2d-3e4f-5a6b7c8d9e0f
+		formatString: 0.00%
+		displayFolder: Customer Metrics
+
+	measure Return_Rate = COUNTIF(FactSales[return_status], "<>") / [Total_Orders]
+		lineageTag: 6d7e8f9a-0b1c-2d3e-4f5a-6b7c8d9e0f1a
+		formatString: 0.00%
+		displayFolder: Quality Metrics
+
+	measure Completed_Orders = CALCULATE([Total_Orders], FILTER(ALL(FactSales), FactSales[order_status] = "Completed"))
+		lineageTag: 7e8f9a0b-1c2d-3e4f-5a6b-7c8d9e0f1a2b
+		formatString: 0
+		displayFolder: Order Metrics
+
+	measure Order_Completion_Rate = DIVIDE([Completed_Orders], [Total_Orders], 0)
+		lineageTag: 8f9a0b1c-2d3e-4f5a-6b7c-8d9e0f1a2b3c
+		formatString: 0.00%
+		displayFolder: Quality Metrics
+
+	measure On_Time_Delivery_Count = CALCULATE([Total_Orders], FILTER(ALL(FactSales), FactSales[delivery_status] = "On Time"))
+		lineageTag: 9a0b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4d
+		formatString: 0
+		displayFolder: Delivery Metrics
+
+	measure On_Time_Delivery_Rate = DIVIDE([On_Time_Delivery_Count], [Total_Orders], 0)
+		lineageTag: 0b1c2d3e-4f5a-6b7c-8d9e-0f1a2b3c4d5e
+		formatString: 0.00%
+		displayFolder: Delivery Metrics
+
+	measure Average_Customer_Rating = AVERAGE(FactSales[customer_rating])
+		lineageTag: 1c2d3e4f-5a6b-7c8d-9e0f-1a2b3c4d5e6f
+		formatString: 0.0
+		displayFolder: Customer Metrics
+
+	measure Revenue_YoY_Growth =
+		VAR CurrentYear = [Total_Revenue]
+		VAR PreviousYear = CALCULATE([Total_Revenue], SAMEPERIODLASTYEAR(DimDate[FullDate]))
+		RETURN DIVIDE(CurrentYear - PreviousYear, PreviousYear, 0)
+		lineageTag: 2d3e4f5a-6b7c-8d9e-0f1a-2b3c4d5e6f7a
+		formatString: 0.00%
+		displayFolder: Time Intelligence
+
+	measure Revenue_MoM_Growth =
+		VAR CurrentMonth = [Total_Revenue]
+		VAR PreviousMonth = CALCULATE([Total_Revenue], DATEADD(DimDate[FullDate], -1, MONTH))
+		RETURN DIVIDE(CurrentMonth - PreviousMonth, PreviousMonth, 0)
+		lineageTag: 3e4f5a6b-7c8d-9e0f-1a2b-3c4d5e6f7a8b
+		formatString: 0.00%
+		displayFolder: Time Intelligence
+
+	measure Revenue_YTD = CALCULATE([Total_Revenue], DATESYTD(DimDate[FullDate]))
+		lineageTag: 4f5a6b7c-8d9e-0f1a-2b3c-4d5e6f7a8b9c
+		formatString: $#,##0.00
+		displayFolder: Time Intelligence
+
+	measure Profit_YTD = CALCULATE([Total_Profit], DATESYTD(DimDate[FullDate]))
+		lineageTag: 5a6b7c8d-9e0f-1a2b-3c4d-5e6f7a8b9c0d
+		formatString: $#,##0.00
+		displayFolder: Time Intelligence
+
+	measure Orders_YTD = CALCULATE([Total_Orders], DATESYTD(DimDate[FullDate]))
+		lineageTag: 6b7c8d9e-0f1a-2b3c-4d5e-6f7a8b9c0d1e
+		formatString: 0
+		displayFolder: Time Intelligence
+
+	measure Top_Product_by_Revenue = MAXX(TOPN(1, ALL(DimProduct), DimProduct[product_name]), DimProduct[product_name])
+		lineageTag: 7c8d9e0f-1a2b-3c4d-5e6f-7a8b9c0d1e2f
+		displayFolder: Product Metrics
+
+	measure Top_Customer_by_Spending = MAXX(TOPN(1, ALL(DimCustomer), DimCustomer[customer_name]), DimCustomer[customer_name])
+		lineageTag: 8d9e0f1a-2b3c-4d5e-6f7a-8b9c0d1e2f3a
+		displayFolder: Customer Metrics
+
+	measure Revenue_per_Customer = DIVIDE([Total_Revenue], [Unique_Customers], 0)
+		lineageTag: 9e0f1a2b-3c4d-5e6f-7a8b-9c0d1e2f3a4b
+		formatString: $#,##0.00
+		displayFolder: Customer Metrics
+
+	measure Profit_per_Customer = DIVIDE([Total_Profit], [Unique_Customers], 0)
+		lineageTag: 0f1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c
+		formatString: $#,##0.00
+		displayFolder: Customer Metrics
+
+	annotation PBI_Id = "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d"
