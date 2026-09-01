@@ -1,0 +1,64 @@
+table DimProduct
+	lineageTag: 5a4b3c2d-1e0f-4a8b-9c7d-6e5f4a3b2c1d
+	sourceLineage
+		removed source 0__a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d
+
+	column product_id
+		dataType: string
+		lineageTag: 1f2e3d4c-5b6a-7a8b-9c0d-1e2f3a4b5c6d
+		sourceColumn: product_id
+		summarizeBy: none
+		isKey: true
+
+	column product_name
+		dataType: string
+		lineageTag: 2e3d4c5b-6a7a-8b9c-0d1e-2f3a4b5c6d7e
+		sourceColumn: product_name
+		summarizeBy: none
+
+	column product_category
+		dataType: string
+		lineageTag: 3d4c5b6a-7a8b-9c0d-1e2f-3a4b5c6d7e8f
+		sourceColumn: product_category
+		summarizeBy: none
+
+	column product_subcategory
+		dataType: string
+		lineageTag: 4c5b6a7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+		sourceColumn: product_subcategory
+		summarizeBy: none
+
+	column brand
+		dataType: string
+		lineageTag: 5b6a7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
+		sourceColumn: brand
+		summarizeBy: none
+
+	column supplier
+		dataType: string
+		lineageTag: 6a7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
+		sourceColumn: supplier
+		summarizeBy: none
+
+	column unit_price
+		dataType: double
+		lineageTag: 7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d
+		sourceColumn: unit_price
+		summarizeBy: Average
+		formatString: 0.00
+
+	column product_cost
+		dataType: double
+		lineageTag: 8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e
+		sourceColumn: product_cost
+		summarizeBy: Average
+		formatString: 0.00
+
+	column product_rating
+		dataType: double
+		lineageTag: 9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f
+		sourceColumn: product_rating
+		summarizeBy: Average
+		formatString: 0.0
+
+	annotation PBI_Id = "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d"
