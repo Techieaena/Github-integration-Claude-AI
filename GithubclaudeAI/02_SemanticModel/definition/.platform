@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/semanticmodel/1.0/schema.json",
+  "metadata": {
+    "type": "SemanticModelDefinition",
+    "displayName": "definition",
+    "description": "TMDL - Tabular Model Definition Language files for semantic model",
+    "version": "1.0"
+  },
+  "config": {
+    "language": "TMDL",
+    "files": [
+      "database.tmdl",
+      "model.tmdl",
+      "relationships.tmdl"
+    ],
+    "tables": 4,
+    "relationships": 2,
+    "measures": 30,
+    "owner": "Analytics Team"
+  }
+}
