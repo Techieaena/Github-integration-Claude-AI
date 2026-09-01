@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/1.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "GithubClaudeAI.Report",
+    "description": "Power BI Report - E-Commerce Analytics Dashboard",
+    "version": "1.0"
+  },
+  "config": {
+    "reportType": "PowerBI",
+    "owner": "Analytics Team"
+  }
+}
