@@ -1,0 +1,202 @@
+table 'Feb Sales 2023'
+	lineageTag: 83624e12-9176-4e50-8efa-a02651f6c79c
+	sourceLineageTag: [dbo].[Feb Sales 2023]
+
+	column Order_ID
+		dataType: string
+		lineageTag: 2fe345e4-8ff7-4c83-baed-5fde10517160
+		sourceLineageTag: Order_ID
+		summarizeBy: none
+		sourceColumn: Order_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: de9a0c45-1c5b-4715-9feb-b51966a8d50f
+		sourceLineageTag: Order_Date
+		summarizeBy: none
+		sourceColumn: Order_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Shipping_Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5600ac71-503a-4d5b-9876-bbbb28575abc
+		sourceLineageTag: Shipping_Date
+		summarizeBy: none
+		sourceColumn: Shipping_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Aging
+		dataType: int64
+		formatString: 0
+		lineageTag: 894d3403-aa1b-4863-8468-8c178956f6ed
+		sourceLineageTag: Aging
+		summarizeBy: sum
+		sourceColumn: Aging
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ship_Mode
+		dataType: string
+		lineageTag: 7a585d4a-654c-4c12-836a-f2b45dd2418a
+		sourceLineageTag: Ship_Mode
+		summarizeBy: none
+		sourceColumn: Ship_Mode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Category
+		dataType: string
+		lineageTag: cd725858-24ce-41f3-9a25-c94021989045
+		sourceLineageTag: Product_Category
+		summarizeBy: none
+		sourceColumn: Product_Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product
+		dataType: string
+		lineageTag: 8aaf0eee-7e3f-4487-b730-973eb14b6847
+		sourceLineageTag: Product
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales
+		dataType: int64
+		formatString: 0
+		lineageTag: f2d6b406-3131-4d14-a6c5-0abc63b8709a
+		sourceLineageTag: Sales
+		summarizeBy: sum
+		sourceColumn: Sales
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: eeee3516-2119-4732-b0aa-8bcbbf138253
+		sourceLineageTag: Quantity
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Discount
+		dataType: double
+		lineageTag: 54b6a65a-1045-48da-9ae2-f667430cfba7
+		sourceLineageTag: Discount
+		summarizeBy: sum
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Profit
+		dataType: double
+		lineageTag: 1ca75d8c-5c44-4dac-b278-d8a27e708280
+		sourceLineageTag: Profit
+		summarizeBy: sum
+		sourceColumn: Profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Shipping_Cost
+		dataType: double
+		lineageTag: a268a2d9-70f2-443e-b2d1-eeb4d3acc0d4
+		sourceLineageTag: Shipping_Cost
+		summarizeBy: sum
+		sourceColumn: Shipping_Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Order_Priority
+		dataType: string
+		lineageTag: 263feefd-cdcc-4ec4-a507-c7469e25cafa
+		sourceLineageTag: Order_Priority
+		summarizeBy: none
+		sourceColumn: Order_Priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_ID
+		dataType: string
+		lineageTag: c127bb0b-86c7-4514-9250-a9bd5354e5fc
+		sourceLineageTag: Customer_ID
+		summarizeBy: none
+		sourceColumn: Customer_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Name
+		dataType: string
+		lineageTag: 1c9ee7bd-d3ba-42f0-a124-241d55bcd0b3
+		sourceLineageTag: Customer_Name
+		summarizeBy: none
+		sourceColumn: Customer_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: b86f8e5e-93fe-44a3-81f8-68946ef93e2f
+		sourceLineageTag: Segment
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 46a18fb2-0365-4103-867c-75a16fe14a72
+		sourceLineageTag: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: 8e7935f9-5872-42f9-b735-98aaa0862a3d
+		sourceLineageTag: State
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 669665c7-11c4-49f4-9e5c-3b1284b4184b
+		sourceLineageTag: Country
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 1257909e-52ca-42b9-9994-b17e5c16a8c1
+		sourceLineageTag: Region
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Feb Sales 2023' = entity
+		mode: directLake
+		source
+			entityName: Feb Sales 2023
+			schemaName: dbo
+			expressionSource: 'DirectLake - Current'
+

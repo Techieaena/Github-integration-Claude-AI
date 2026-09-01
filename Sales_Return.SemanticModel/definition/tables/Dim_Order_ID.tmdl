@@ -1,0 +1,20 @@
+table Dim_Order_ID
+	lineageTag: 4024bec6-8ae2-4ebe-8152-09811539fb7b
+	sourceLineageTag: [dbo].[Dim_Order_ID]
+
+	column Order_ID
+		dataType: string
+		lineageTag: 60348621-9a2b-42ee-814a-7bc42238311d
+		sourceLineageTag: Order_ID
+		summarizeBy: none
+		sourceColumn: Order_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Order_ID = entity
+		mode: directLake
+		source
+			entityName: Dim_Order_ID
+			schemaName: dbo
+			expressionSource: 'DirectLake - Current'
+

@@ -1,0 +1,72 @@
+table calendar
+	lineageTag: d0769753-b664-44ee-b5bb-ac0c5eed6b4c
+	sourceLineageTag: [dbo].[calendar]
+
+	column Date
+		dataType: dateTime
+		formatString: dd/mm/yy
+		lineageTag: 6eddca85-49f1-4a95-bd2e-a064127a08c9
+		sourceLineageTag: Date
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: Date
+
+		changedProperty = DataType
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 0e478fc6-9dc1-4685-aeb9-e97f4d5fb94e
+		sourceLineageTag: Quarter
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: f254f8e1-c8ce-4203-af76-e097369162c8
+		sourceLineageTag: Year
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 8c266fd8-6003-417c-9a6c-5856c47ca7b9
+		sourceLineageTag: Month Name
+		summarizeBy: none
+		sourceColumn: Month Name
+		sortByColumn: Month
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 280cd85a-baf0-45d4-9e5d-3f1ebeb85bf8
+		sourceLineageTag: Month
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	partition calendar = entity
+		mode: directLake
+		source
+			entityName: calendar
+			schemaName: dbo
+			expressionSource: 'DirectLake - gitdatalakehouse'
+
