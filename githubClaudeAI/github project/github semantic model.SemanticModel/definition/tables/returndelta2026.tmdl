@@ -1,0 +1,74 @@
+table returndelta2026
+	lineageTag: 7c5a9260-81f8-40ed-acf9-858eb830e599
+	sourceLineageTag: [dbo].[returndelta2026]
+
+	column ReturnDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ee22e9d4-8ce7-431f-a019-9d40b3dfbc61
+		sourceLineageTag: ReturnDate
+		summarizeBy: none
+		sourceColumn: ReturnDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 2d68206b-9f72-46e6-938f-f08344b8d09a
+		sourceLineageTag: TerritoryKey
+		summarizeBy: count
+		sourceColumn: TerritoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 115bc458-ee00-4841-b46e-beedd9e21236
+		sourceLineageTag: ProductKey
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReturnQuantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 742b209b-4ba6-4f27-9e1d-f82fe96d81dd
+		sourceLineageTag: ReturnQuantity
+		summarizeBy: sum
+		sourceColumn: ReturnQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 28ecfb18-e3f2-43fe-8748-7a4b14ee7f0a
+		sourceLineageTag: Month Name
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: Month Name
+		sortByColumn: Month
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f89aafd-2cca-41fb-96c6-16ae0b5cb1ea
+		sourceLineageTag: Month
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	partition returndelta2026 = entity
+		mode: directLake
+		source
+			entityName: returndelta2026
+			schemaName: dbo
+			expressionSource: 'DirectLake - gitdatalakehouse'
+
