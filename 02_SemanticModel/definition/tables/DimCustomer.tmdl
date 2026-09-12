@@ -1,0 +1,86 @@
+table DimCustomer
+{
+  lineageTag: 11111111-2222-3333-4444-555555555555
+
+  column customer_id
+  {
+    dataType: string
+    lineageTag: aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+    summarizeBy: none
+    isKey: true
+  }
+
+  column customer_name
+  {
+    dataType: string
+    lineageTag: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb
+  }
+
+  column customer_age
+  {
+    dataType: int64
+    formatString: 0
+    lineageTag: cccccccc-cccc-cccc-cccc-cccccccccccc
+  }
+
+  column gender
+  {
+    dataType: string
+    lineageTag: dddddddd-dddd-dddd-dddd-dddddddddddd
+  }
+
+  column customer_segment
+  {
+    dataType: string
+    lineageTag: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee
+  }
+
+  column customer_city
+  {
+    dataType: string
+    lineageTag: ffffffff-ffff-ffff-ffff-ffffffffffff
+  }
+
+  column customer_state
+  {
+    dataType: string
+    lineageTag: 10101010-1010-1010-1010-101010101010
+  }
+
+  column customer_country
+  {
+    dataType: string
+    lineageTag: 20202020-2020-2020-2020-202020202020
+  }
+
+  column region
+  {
+    dataType: string
+    lineageTag: 30303030-3030-3030-3030-303030303030
+  }
+
+  column customer_postal_code
+  {
+    dataType: string
+    lineageTag: 40404040-4040-4040-4040-404040404040
+  }
+
+  column customer_acquisition_cost
+  {
+    dataType: double
+    formatString: $#,##0.00
+    lineageTag: 50505050-5050-5050-5050-505050505050
+  }
+
+  partition 'DimCustomer' = m
+  {
+    mode: import
+    source =
+      let
+        Source = Csv.Document(File.Contents("C:\Users\admin\GithubclaudeAI\01_DataLayer\transformed_silver\customer_master.csv"),[Delimiter=",", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+        Header = Table.PromoteHeaders(Source),
+        Schema = Table.TransformColumnTypes(Header, {{"customer_id", type text}, {"customer_name", type text}, {"customer_age", Int64.Type}, {"gender", type text}, {"customer_segment", type text}, {"customer_city", type text}, {"customer_state", type text}, {"customer_country", type text}, {"region", type text}, {"customer_postal_code", type text}, {"customer_acquisition_cost", type number}})
+      in
+        Schema
+  }
+}

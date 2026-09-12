@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "E-Commerce Analytics Semantic Model"
+  },
+  "config": {
+    "version": "1.0",
+    "name": "E-Commerce Analytics",
+    "description": "Star Schema semantic model for e-commerce analytics with medallion architecture (Bronze-Silver-Gold layers)"
+  }
+}

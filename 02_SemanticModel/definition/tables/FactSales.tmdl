@@ -1,0 +1,92 @@
+table FactSales
+{
+  lineageTag: 44444444-5555-6666-7777-888888888888
+
+  column order_id
+  {
+    dataType: string
+    lineageTag: aaaaaa03-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+    summarizeBy: none
+  }
+
+  column customer_id
+  {
+    dataType: string
+    lineageTag: bbbbbb03-bbbb-bbbb-bbbb-bbbbbbbbbbbb
+    summarizeBy: none
+  }
+
+  column product_id
+  {
+    dataType: string
+    lineageTag: cccccc03-cccc-cccc-cccc-cccccccccccc
+    summarizeBy: none
+  }
+
+  column order_date
+  {
+    dataType: dateTime
+    formatString: yyyy-mm-dd
+    lineageTag: dddddd03-dddd-dddd-dddd-dddddddddddd
+    summarizeBy: none
+  }
+
+  column quantity
+  {
+    dataType: int64
+    formatString: 0
+    lineageTag: eeeeee03-eeee-eeee-eeee-eeeeeeeeeeee
+  }
+
+  column unit_price
+  {
+    dataType: double
+    formatString: $#,##0.00
+    lineageTag: ffffff03-ffff-ffff-ffff-ffffffffffff
+  }
+
+  column discount_percent
+  {
+    dataType: double
+    formatString: 0.00%
+    lineageTag: 101010h1-1010-1010-1010-101010101010
+  }
+
+  column tax_amount
+  {
+    dataType: double
+    formatString: $#,##0.00
+    lineageTag: 202020h1-2020-2020-2020-202020202020
+  }
+
+  column shipping_cost
+  {
+    dataType: double
+    formatString: $#,##0.00
+    lineageTag: 303030h1-3030-3030-3030-303030303030
+  }
+
+  column order_status
+  {
+    dataType: string
+    lineageTag: 404040h1-4040-4040-4040-404040404040
+  }
+
+  column payment_method
+  {
+    dataType: string
+    lineageTag: 505050h1-5050-5050-5050-505050505050
+  }
+
+  partition 'FactSales' = m
+  {
+    mode: import
+    source =
+      let
+        Source = Csv.Document(File.Contents("C:\Users\admin\GithubclaudeAI\01_DataLayer\transformed_silver\order_items.csv"),[Delimiter=",", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+        Header = Table.PromoteHeaders(Source),
+        Schema = Table.TransformColumnTypes(Header, {{"order_id", type text}, {"customer_id", type text}, {"product_id", type text}, {"order_date", type datetime}, {"quantity", Int64.Type}, {"unit_price", type number}, {"discount_percent", type number}, {"tax_amount", type number}, {"shipping_cost", type number}, {"order_status", type text}, {"payment_method", type text}})
+      in
+        Schema
+  }
+}

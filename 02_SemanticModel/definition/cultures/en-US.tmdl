@@ -1,0 +1,85 @@
+culture en-US
+{
+  metadata: culture
+  linguisticMetadata:
+  {
+    content: "en-US"
+    contentType: "application/vnd.ms-excel.linguisticmetadata+json"
+  }
+
+  displayInfos =
+  [
+    {
+      referenceName: 'E-Commerce Analytics'
+      displayString: "E-Commerce Analytics"
+    }
+    {
+      referenceName: 'FactSales'
+      displayString: "Sales Fact Table"
+    }
+    {
+      referenceName: 'FactSales'[order_id]
+      displayString: "Order ID"
+    }
+    {
+      referenceName: 'FactSales'[customer_id]
+      displayString: "Customer ID"
+    }
+    {
+      referenceName: 'FactSales'[product_id]
+      displayString: "Product ID"
+    }
+    {
+      referenceName: 'FactSales'[order_date]
+      displayString: "Order Date"
+    }
+    {
+      referenceName: 'FactSales'[quantity]
+      displayString: "Quantity"
+    }
+    {
+      referenceName: 'DimCustomer'
+      displayString: "Customer Dimension"
+    }
+    {
+      referenceName: 'DimCustomer'[customer_name]
+      displayString: "Customer Name"
+    }
+    {
+      referenceName: 'DimCustomer'[customer_segment]
+      displayString: "Customer Segment"
+    }
+    {
+      referenceName: 'DimProduct'
+      displayString: "Product Dimension"
+    }
+    {
+      referenceName: 'DimProduct'[product_name]
+      displayString: "Product Name"
+    }
+    {
+      referenceName: 'DimProduct'[product_category]
+      displayString: "Product Category"
+    }
+    {
+      referenceName: 'DimDate'
+      displayString: "Date Dimension"
+    }
+    {
+      referenceName: 'Measures'
+      displayString: "Measures"
+    }
+    {
+      referenceName: 'Measures'[Total Revenue]
+      displayString: "Total Revenue"
+    }
+    {
+      referenceName: 'Measures'[Gross Profit]
+      displayString: "Gross Profit"
+    }
+    {
+      referenceName: 'Measures'[Total Orders]
+      displayString: "Total Orders"
+    }
+  ]
+}

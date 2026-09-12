@@ -1,0 +1,75 @@
+table DimProduct
+{
+  lineageTag: 22222222-3333-4444-5555-666666666666
+
+  column product_id
+  {
+    dataType: string
+    lineageTag: aaaaaa01-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+    summarizeBy: none
+    isKey: true
+  }
+
+  column product_name
+  {
+    dataType: string
+    lineageTag: bbbbbb01-bbbb-bbbb-bbbb-bbbbbbbbbbbb
+  }
+
+  column product_category
+  {
+    dataType: string
+    lineageTag: cccccc01-cccc-cccc-cccc-cccccccccccc
+  }
+
+  column product_subcategory
+  {
+    dataType: string
+    lineageTag: dddddd01-dddd-dddd-dddd-dddddddddddd
+  }
+
+  column brand
+  {
+    dataType: string
+    lineageTag: eeeeee01-eeee-eeee-eeee-eeeeeeeeeeee
+  }
+
+  column supplier
+  {
+    dataType: string
+    lineageTag: ffffff01-ffff-ffff-ffff-ffffffffffff
+  }
+
+  column unit_price
+  {
+    dataType: double
+    formatString: $#,##0.00
+    lineageTag: 101010f1-1010-1010-1010-101010101010
+  }
+
+  column product_cost
+  {
+    dataType: double
+    formatString: $#,##0.00
+    lineageTag: 202020f1-2020-2020-2020-202020202020
+  }
+
+  column product_rating
+  {
+    dataType: double
+    formatString: 0.0
+    lineageTag: 303030f1-3030-3030-3030-303030303030
+  }
+
+  partition 'DimProduct' = m
+  {
+    mode: import
+    source =
+      let
+        Source = Csv.Document(File.Contents("C:\Users\admin\GithubclaudeAI\01_DataLayer\transformed_silver\product_catalog.csv"),[Delimiter=",", Columns=9, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+        Header = Table.PromoteHeaders(Source),
+        Schema = Table.TransformColumnTypes(Header, {{"product_id", type text}, {"product_name", type text}, {"product_category", type text}, {"product_subcategory", type text}, {"brand", type text}, {"supplier", type text}, {"unit_price", type number}, {"product_cost", type number}, {"product_rating", type number}})
+      in
+        Schema
+  }
+}

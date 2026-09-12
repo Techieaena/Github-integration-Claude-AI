@@ -1,0 +1,291 @@
+table Measures
+{
+  lineageTag: 55555555-6666-7777-8888-999999999999
+  isHidden: true
+
+  partition 'Measures' = m
+  {
+    mode: import
+    source = #table(type table [Name = text], {})
+  }
+
+  measure 'Total Sales' =
+    SUMX(FactSales, FactSales[quantity] * FactSales[unit_price])
+  {
+    displayFolder: "Financial Metrics"
+    lineageTag: 11111111-1111-1111-1111-111111111111
+    formatString: $#,##0.00
+  }
+
+  measure 'Total Revenue' =
+    SUMX(FactSales, (FactSales[quantity] * FactSales[unit_price]) * (1 - FactSales[discount_percent]) + FactSales[tax_amount] + FactSales[shipping_cost])
+  {
+    displayFolder: "Financial Metrics"
+    lineageTag: 22222222-2222-2222-2222-222222222222
+    formatString: $#,##0.00
+  }
+
+  measure 'Total Cost' =
+    SUMX(FactSales, FactSales[quantity] * RELATED(DimProduct[product_cost]))
+  {
+    displayFolder: "Financial Metrics"
+    lineageTag: 33333333-3333-3333-3333-333333333333
+    formatString: $#,##0.00
+  }
+
+  measure 'Gross Profit' =
+    [Total Revenue] - [Total Cost]
+  {
+    displayFolder: "Financial Metrics"
+    lineageTag: 44444444-4444-4444-4444-444444444444
+    formatString: $#,##0.00
+  }
+
+  measure 'Gross Profit Margin %' =
+    IF([Total Revenue] = 0, 0, DIVIDE([Gross Profit], [Total Revenue]))
+  {
+    displayFolder: "Financial Metrics"
+    lineageTag: 55555555-5555-5555-5555-555555555555
+    formatString: 0.0%
+  }
+
+  measure 'Total Discount Amount' =
+    SUMX(FactSales, (FactSales[quantity] * FactSales[unit_price]) * FactSales[discount_percent])
+  {
+    displayFolder: "Financial Metrics"
+    lineageTag: 66666666-6666-6666-6666-666666666666
+    formatString: $#,##0.00
+  }
+
+  measure 'Total Tax Amount' =
+    SUM(FactSales[tax_amount])
+  {
+    displayFolder: "Financial Metrics"
+    lineageTag: 77777777-7777-7777-7777-777777777777
+    formatString: $#,##0.00
+  }
+
+  measure 'Total Shipping Cost' =
+    SUM(FactSales[shipping_cost])
+  {
+    displayFolder: "Financial Metrics"
+    lineageTag: 88888888-8888-8888-8888-888888888888
+    formatString: $#,##0.00
+  }
+
+  measure 'Average Order Value' =
+    DIVIDE([Total Revenue], DISTINCTCOUNT(FactSales[order_id]))
+  {
+    displayFolder: "Order Metrics"
+    lineageTag: aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+    formatString: $#,##0.00
+  }
+
+  measure 'Total Orders' =
+    DISTINCTCOUNT(FactSales[order_id])
+  {
+    displayFolder: "Order Metrics"
+    lineageTag: bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb
+    formatString: 0
+  }
+
+  measure 'Total Order Items' =
+    SUM(FactSales[quantity])
+  {
+    displayFolder: "Order Metrics"
+    lineageTag: cccccccc-cccc-cccc-cccc-cccccccccccc
+    formatString: 0
+  }
+
+  measure 'Average Items per Order' =
+    DIVIDE([Total Order Items], [Total Orders])
+  {
+    displayFolder: "Order Metrics"
+    lineageTag: dddddddd-dddd-dddd-dddd-dddddddddddd
+    formatString: 0.0
+  }
+
+  measure 'Completed Orders' =
+    COUNTIF(FactSales[order_status], "Completed")
+  {
+    displayFolder: "Order Metrics"
+    lineageTag: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee
+    formatString: 0
+  }
+
+  measure 'Cancelled Orders' =
+    COUNTIF(FactSales[order_status], "Cancelled")
+  {
+    displayFolder: "Order Metrics"
+    lineageTag: ffffffff-ffff-ffff-ffff-ffffffffffff
+    formatString: 0
+  }
+
+  measure 'Order Completion Rate %' =
+    IF([Total Orders] = 0, 0, DIVIDE([Completed Orders], [Total Orders]))
+  {
+    displayFolder: "Order Metrics"
+    lineageTag: 01010101-0101-0101-0101-010101010101
+    formatString: 0.0%
+  }
+
+  measure 'Total Unique Customers' =
+    DISTINCTCOUNT(FactSales[customer_id])
+  {
+    displayFolder: "Customer Metrics"
+    lineageTag: 02020202-0202-0202-0202-020202020202
+    formatString: 0
+  }
+
+  measure 'Revenue per Customer' =
+    DIVIDE([Total Revenue], [Total Unique Customers])
+  {
+    displayFolder: "Customer Metrics"
+    lineageTag: 03030303-0303-0303-0303-030303030303
+    formatString: $#,##0.00
+  }
+
+  measure 'Orders per Customer' =
+    DIVIDE([Total Orders], [Total Unique Customers])
+  {
+    displayFolder: "Customer Metrics"
+    lineageTag: 04040404-0404-0404-0404-040404040404
+    formatString: 0.0
+  }
+
+  measure 'Customer Acquisition Cost Avg' =
+    AVERAGE(DimCustomer[customer_acquisition_cost])
+  {
+    displayFolder: "Customer Metrics"
+    lineageTag: 05050505-0505-0505-0505-050505050505
+    formatString: $#,##0.00
+  }
+
+  measure 'Premium Customers' =
+    CALCULATE(DISTINCTCOUNT(DimCustomer[customer_id]), DimCustomer[customer_segment] = "Premium")
+  {
+    displayFolder: "Customer Metrics"
+    lineageTag: 06060606-0606-0606-0606-060606060606
+    formatString: 0
+  }
+
+  measure 'Regular Customers' =
+    CALCULATE(DISTINCTCOUNT(DimCustomer[customer_id]), DimCustomer[customer_segment] = "Regular")
+  {
+    displayFolder: "Customer Metrics"
+    lineageTag: 07070707-0707-0707-0707-070707070707
+    formatString: 0
+  }
+
+  measure 'Total Products' =
+    DISTINCTCOUNT(DimProduct[product_id])
+  {
+    displayFolder: "Product Metrics"
+    lineageTag: 08080808-0808-0808-0808-080808080808
+    formatString: 0
+  }
+
+  measure 'Products Sold' =
+    DISTINCTCOUNT(FactSales[product_id])
+  {
+    displayFolder: "Product Metrics"
+    lineageTag: 09090909-0909-0909-0909-090909090909
+    formatString: 0
+  }
+
+  measure 'Average Product Rating' =
+    AVERAGE(DimProduct[product_rating])
+  {
+    displayFolder: "Product Metrics"
+    lineageTag: 0a0a0a0a-0a0a-0a0a-0a0a-0a0a0a0a0a0a
+    formatString: 0.0
+  }
+
+  measure 'High Rated Products' =
+    CALCULATE(DISTINCTCOUNT(DimProduct[product_id]), DimProduct[product_rating] >= 4)
+  {
+    displayFolder: "Product Metrics"
+    lineageTag: 0b0b0b0b-0b0b-0b0b-0b0b-0b0b0b0b0b0b
+    formatString: 0
+  }
+
+  measure 'Revenue by Category' =
+    SUMX(VALUES(DimProduct[product_category]), CALCULATE([Total Revenue]))
+  {
+    displayFolder: "Product Metrics"
+    lineageTag: 0c0c0c0c-0c0c-0c0c-0c0c-0c0c0c0c0c0c
+    formatString: $#,##0.00
+  }
+
+  measure 'Quality Score' =
+    CALCULATE(AVERAGE(DimProduct[product_rating]))
+  {
+    displayFolder: "Quality Metrics"
+    lineageTag: 0d0d0d0d-0d0d-0d0d-0d0d-0d0d0d0d0d0d
+    formatString: 0.00
+  }
+
+  measure 'Order Defect Rate %' =
+    IF([Total Orders] = 0, 0, DIVIDE([Cancelled Orders], [Total Orders]))
+  {
+    displayFolder: "Quality Metrics"
+    lineageTag: 0e0e0e0e-0e0e-0e0e-0e0e-0e0e0e0e0e0e
+    formatString: 0.0%
+  }
+
+  measure 'Average Discount %' =
+    AVERAGE(FactSales[discount_percent])
+  {
+    displayFolder: "Quality Metrics"
+    lineageTag: 0f0f0f0f-0f0f-0f0f-0f0f-0f0f0f0f0f0f
+    formatString: 0.00%
+  }
+
+  measure 'YTD Revenue' =
+    CALCULATE([Total Revenue], DATESYTD(DimDate[FullDate]))
+  {
+    displayFolder: "Time Intelligence"
+    lineageTag: 10101010-1010-1010-1010-101010101010
+    formatString: $#,##0.00
+  }
+
+  measure 'YTD Orders' =
+    CALCULATE([Total Orders], DATESYTD(DimDate[FullDate]))
+  {
+    displayFolder: "Time Intelligence"
+    lineageTag: 11111111-1111-1111-1111-111111111111
+    formatString: 0
+  }
+
+  measure 'MTD Revenue' =
+    CALCULATE([Total Revenue], DATESMTD(DimDate[FullDate]))
+  {
+    displayFolder: "Time Intelligence"
+    lineageTag: 12121212-1212-1212-1212-121212121212
+    formatString: $#,##0.00
+  }
+
+  measure 'Previous Year Revenue' =
+    CALCULATE([Total Revenue], SAMEPERIODLASTYEAR(DimDate[FullDate]))
+  {
+    displayFolder: "Time Intelligence"
+    lineageTag: 13131313-1313-1313-1313-131313131313
+    formatString: $#,##0.00
+  }
+
+  measure 'YoY Growth %' =
+    IF([Previous Year Revenue] = 0, 0, DIVIDE(([Total Revenue] - [Previous Year Revenue]), [Previous Year Revenue]))
+  {
+    displayFolder: "Time Intelligence"
+    lineageTag: 14141414-1414-1414-1414-141414141414
+    formatString: 0.0%
+  }
+
+  measure 'Revenue Trend' =
+    CALCULATE([Total Revenue], DATEADD(DimDate[FullDate], -30, DAY))
+  {
+    displayFolder: "Time Intelligence"
+    lineageTag: 15151515-1515-1515-1515-151515151515
+    formatString: $#,##0.00
+  }
+}

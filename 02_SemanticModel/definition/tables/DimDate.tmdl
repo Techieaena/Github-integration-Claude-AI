@@ -1,0 +1,89 @@
+table DimDate
+{
+  lineageTag: 33333333-4444-5555-6666-777777777777
+
+  column FullDate
+  {
+    dataType: dateTime
+    formatString: yyyy-mm-dd
+    lineageTag: aaaaaa02-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+    summarizeBy: none
+    isKey: true
+  }
+
+  column Year
+  {
+    dataType: int64
+    formatString: 0
+    lineageTag: bbbbbb02-bbbb-bbbb-bbbb-bbbbbbbbbbbb
+  }
+
+  column Quarter
+  {
+    dataType: string
+    lineageTag: cccccc02-cccc-cccc-cccc-cccccccccccc
+  }
+
+  column Month
+  {
+    dataType: int64
+    formatString: 0
+    lineageTag: dddddd02-dddd-dddd-dddd-dddddddddddd
+  }
+
+  column MonthName
+  {
+    dataType: string
+    lineageTag: eeeeee02-eeee-eeee-eeee-eeeeeeeeeeee
+  }
+
+  column DayOfMonth
+  {
+    dataType: int64
+    formatString: 0
+    lineageTag: ffffff02-ffff-ffff-ffff-ffffffffffff
+  }
+
+  column DayOfWeek
+  {
+    dataType: int64
+    formatString: 0
+    lineageTag: 101010g1-1010-1010-1010-101010101010
+  }
+
+  column DayName
+  {
+    dataType: string
+    lineageTag: 202020g1-2020-2020-2020-202020202020
+  }
+
+  column WeekOfYear
+  {
+    dataType: int64
+    formatString: 0
+    lineageTag: 303030g1-3030-3030-3030-303030303030
+  }
+
+  partition 'DimDate' = m
+  {
+    mode: import
+    source =
+      let
+        StartDate = #date(2020, 1, 1),
+        EndDate = #date(2025, 12, 31),
+        DateCount = Duration.Days(EndDate - StartDate) + 1,
+        Dates = List.Dates(StartDate, DateCount, #duration(1, 0, 0, 0)),
+        DateTable = Table.FromList(Dates, Splitter.SplitByNothing(), {"FullDate"}),
+        TypedTable = Table.TransformColumnTypes(DateTable, {{"FullDate", type date}}),
+        AddYear = Table.AddColumn(TypedTable, "Year", each Date.Year([FullDate]), Int64.Type),
+        AddQuarter = Table.AddColumn(AddYear, "Quarter", each "Q" & Text.From(Date.QuarterOfYear([FullDate])), type text),
+        AddMonth = Table.AddColumn(AddQuarter, "Month", each Date.Month([FullDate]), Int64.Type),
+        AddMonthName = Table.AddColumn(AddMonth, "MonthName", each Text.Proper(Date.MonthName([FullDate])), type text),
+        AddDayOfMonth = Table.AddColumn(AddMonthName, "DayOfMonth", each Date.Day([FullDate]), Int64.Type),
+        AddDayOfWeek = Table.AddColumn(AddDayOfMonth, "DayOfWeek", each Date.DayOfWeek([FullDate]) + 1, Int64.Type),
+        AddDayName = Table.AddColumn(AddDayOfWeek, "DayName", each Text.Proper(Date.DayName([FullDate])), type text),
+        AddWeekOfYear = Table.AddColumn(AddDayName, "WeekOfYear", each Date.WeekOfYear([FullDate]), Int64.Type)
+      in
+        AddWeekOfYear
+  }
+}

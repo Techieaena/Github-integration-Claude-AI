@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "name": "E-Commerce Analytics",
+  "description": "Star Schema semantic model for comprehensive e-commerce analytics",
+  "compatibilityLevel": 1600,
+  "model": {
+    "culture": "en-US",
+    "dataSources": [
+      {
+        "type": "Folder",
+        "name": "BronzeLake",
+        "connectionDetails": {
+          "path": "C:\\Users\\admin\\GithubclaudeAI\\01_DataLayer\\raw_bronze\\"
+        }
+      },
+      {
+        "type": "Folder",
+        "name": "SilverLake",
+        "connectionDetails": {
+          "path": "C:\\Users\\admin\\GithubclaudeAI\\01_DataLayer\\transformed_silver\\"
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "DimCustomer",
+        "description": "Customer Dimension - 25,000 unique customers",
+        "columns": 11,
+        "rows": 25000,
+        "partitions": 1
+      },
+      {
+        "name": "DimProduct",
+        "description": "Product Dimension - 1,175 unique products",
+        "columns": 9,
+        "rows": 1175,
+        "partitions": 1
+      },
+      {
+        "name": "DimDate",
+        "description": "Date Dimension - Time intelligence and calendar attributes",
+        "columns": 8,
+        "partitions": 1
+      },
+      {
+        "name": "FactSales",
+        "description": "Sales Fact Table - 138,116 order items",
+        "columns": 11,
+        "rows": 138116,
+        "partitions": 1
+      },
+      {
+        "name": "Measures",
+        "description": "Measure Table - 32 DAX formulas across Financial, Order, Customer, Product, Quality, and Time Intelligence categories",
+        "isMeasureTable": true,
+        "measures": 32
+      }
+    ],
+    "relationships": [
+      {
+        "name": "FK_FactSales_DimCustomer",
+        "fromTable": "FactSales",
+        "fromColumn": "customer_id",
+        "toTable": "DimCustomer",
+        "toColumn": "customer_id",
+        "crossFilteringBehavior": "BothDirections"
+      },
+      {
+        "name": "FK_FactSales_DimProduct",
+        "fromTable": "FactSales",
+        "fromColumn": "product_id",
+        "toTable": "DimProduct",
+        "toColumn": "product_id",
+        "crossFilteringBehavior": "BothDirections"
+      },
+      {
+        "name": "FK_FactSales_DimDate",
+        "fromTable": "FactSales",
+        "fromColumn": "order_date",
+        "toTable": "DimDate",
+        "toColumn": "FullDate",
+        "crossFilteringBehavior": "BothDirections"
+      }
+    ],
+    "measures": [
+      {
+        "table": "Measures",
+        "name": "Total Sales",
+        "category": "Financial Metrics",
+        "description": "Total gross sales value (quantity × unit_price)"
+      },
+      {
+        "table": "Measures",
+        "name": "Total Revenue",
+        "category": "Financial Metrics",
+        "description": "Net revenue including tax, shipping, and after discounts"
+      },
+      {
+        "table": "Measures",
+        "name": "Gross Profit",
+        "category": "Financial Metrics",
+        "description": "Gross profit = Revenue - Cost"
+      },
+      {
+        "table": "Measures",
+        "name": "Total Orders",
+        "category": "Order Metrics",
+        "description": "Distinct count of orders"
+      },
+      {
+        "table": "Measures",
+        "name": "Total Unique Customers",
+        "category": "Customer Metrics",
+        "description": "Distinct count of customers"
+      },
+      {
+        "table": "Measures",
+        "name": "Average Product Rating",
+        "category": "Product Metrics",
+        "description": "Average product rating across all products"
+      }
+    ]
+  }
+}

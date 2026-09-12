@@ -1,0 +1,32 @@
+model Model
+{
+  tables
+  {
+    'DimCustomer'
+    'DimProduct'
+    'DimDate'
+    'FactSales'
+    'Measures'
+  }
+
+  relationships
+  {
+    relationship 'FK_FactSales_DimCustomer'
+    {
+      fromColumn: FactSales[customer_id]
+      toColumn: DimCustomer[customer_id]
+    }
+
+    relationship 'FK_FactSales_DimProduct'
+    {
+      fromColumn: FactSales[product_id]
+      toColumn: DimProduct[product_id]
+    }
+
+    relationship 'FK_FactSales_DimDate'
+    {
+      fromColumn: FactSales[order_date]
+      toColumn: DimDate[FullDate]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+database 'E-Commerce Analytics'
+{
+  compatibilityLevel: 1600
+  model: model
+  defaultCulture: en-US
+  collation: en-US_UTF-8
+}
