@@ -10,7 +10,7 @@ from pathlib import Path
 # Add current directory to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from medallion_pipeline import main as run_pipeline
+from medallion_pipeline import main as run_pipeline, upload_raw_bronze_to_lakehouse
 
 
 def print_banner():
@@ -98,48 +98,84 @@ def main():
         print("\n❌ Please configure credentials")
         sys.exit(1)
 
+    # Menu
+    print("\n" + "=" * 70)
+    print("📋 SELECT OPERATION")
+    print("=" * 70)
+    print("1. Upload Raw Bronze files only (from 01_DataLayer/raw_bronze)")
+    print("2. Run full Medallion Pipeline (Download → Bronze → Silver → Gold)")
+    print("\n" + "=" * 70)
+
+    choice = input("👉 Select option (1 or 2): ").strip()
+
     # Ready to go
     print("\n" + "=" * 70)
-    print("🚀 STARTING PIPELINE")
-    print("=" * 70)
-
     start_time = datetime.now()
 
     try:
-        # Run pipeline
-        run_pipeline()
+        if choice == "1":
+            print("🚀 UPLOADING RAW BRONZE FILES")
+            print("=" * 70)
+            success = upload_raw_bronze_to_lakehouse(
+                workspace_name="fabricaena",
+                lakehouse_name="githubclaude"
+            )
 
-        # Success
-        end_time = datetime.now()
-        duration = (end_time - start_time).total_seconds()
+            if success:
+                end_time = datetime.now()
+                duration = (end_time - start_time).total_seconds()
+                print("\n" + "=" * 70)
+                print("✅ RAW BRONZE UPLOAD COMPLETED")
+                print("=" * 70)
+                print(f"⏱️  Duration: {duration:.0f} seconds ({duration/60:.1f} minutes)")
+                print(f"📍 Files uploaded to: fabricaena/githubclaude/Files/Raw_bronze")
+            else:
+                print("\n" + "=" * 70)
+                print("❌ UPLOAD FAILED")
+                print("=" * 70)
+                sys.exit(1)
 
-        print("\n" + "=" * 70)
-        print("✅ PIPELINE EXECUTION COMPLETED SUCCESSFULLY")
-        print("=" * 70)
-        print(f"\n⏱️  Duration: {duration:.0f} seconds ({duration/60:.1f} minutes)")
-        print(f"📊 Data is now available in Fabric Lakehouse:")
-        print(f"   Workspace: fabricaena")
-        print(f"   Lakehouse: githubclaude")
-        print(f"\n📁 Folder Structure:")
-        print(f"   Files/")
-        print(f"   ├── Bronze/     (Raw CSV data)")
-        print(f"   ├── Silver/     (Cleaned Parquet)")
-        print(f"   └── Gold/       (Analytical Parquet)")
-        print(f"\n🔍 Next Steps:")
-        print(f"   1. Open Fabric Workspace: fabricaena")
-        print(f"   2. Navigate to Lakehouse: githubclaude")
-        print(f"   3. Query Bronze/Silver/Gold data")
-        print(f"   4. Create SQL Analytical Endpoint views")
-        print(f"   5. Build Power BI reports")
+        elif choice == "2":
+            print("🚀 STARTING FULL PIPELINE")
+            print("=" * 70)
+            # Run full pipeline
+            run_pipeline()
 
-        print("\n" + "=" * 70)
+            # Success
+            end_time = datetime.now()
+            duration = (end_time - start_time).total_seconds()
+
+            print("\n" + "=" * 70)
+            print("✅ PIPELINE EXECUTION COMPLETED SUCCESSFULLY")
+            print("=" * 70)
+            print(f"\n⏱️  Duration: {duration:.0f} seconds ({duration/60:.1f} minutes)")
+            print(f"📊 Data is now available in Fabric Lakehouse:")
+            print(f"   Workspace: fabricaena")
+            print(f"   Lakehouse: githubclaude")
+            print(f"\n📁 Folder Structure:")
+            print(f"   Files/")
+            print(f"   ├── Bronze/     (Raw CSV data)")
+            print(f"   ├── Silver/     (Cleaned Parquet)")
+            print(f"   └── Gold/       (Analytical Parquet)")
+            print(f"\n🔍 Next Steps:")
+            print(f"   1. Open Fabric Workspace: fabricaena")
+            print(f"   2. Navigate to Lakehouse: githubclaude")
+            print(f"   3. Query Bronze/Silver/Gold data")
+            print(f"   4. Create SQL Analytical Endpoint views")
+            print(f"   5. Build Power BI reports")
+
+            print("\n" + "=" * 70)
+
+        else:
+            print("\n❌ Invalid option selected")
+            sys.exit(1)
 
     except Exception as e:
         end_time = datetime.now()
         duration = (end_time - start_time).total_seconds()
 
         print("\n" + "=" * 70)
-        print("❌ PIPELINE EXECUTION FAILED")
+        print("❌ OPERATION FAILED")
         print("=" * 70)
         print(f"\n⏱️  Duration: {duration:.0f} seconds")
         print(f"Error: {e}")

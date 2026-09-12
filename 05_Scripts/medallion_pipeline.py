@@ -456,30 +456,138 @@ class GoldLayer:
 class FabricLakehouseUploader:
     """Upload files to Fabric Lakehouse"""
 
-    def __init__(self):
-        self.credential = DefaultAzureCredential()
+    def __init__(self, workspace_name: str = "fabricaena", lakehouse_name: str = "githubclaude"):
+        from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
+        from azure.storage.filedatalake import DataLakeServiceClient
+
+        self.workspace_name = workspace_name
+        self.lakehouse_name = lakehouse_name
+        self.account_url = "https://onelake.dfs.core.windows.net"
+
+        # Try default credential first, fall back to browser auth
+        try:
+            self.credential = DefaultAzureCredential()
+            self.credential.get_token("https://storage.azure.com/.default")
+        except Exception:
+            print("   Using browser authentication...")
+            self.credential = InteractiveBrowserCredential()
 
     def upload_file_to_lakehouse(self, local_file_path: str, lakehouse_path: str) -> bool:
-        """Upload a single file"""
+        """Upload a single file to Lakehouse"""
         try:
-            token = self.credential.get_token("https://storage.azure.com/.default")
+            from azure.storage.filedatalake import DataLakeServiceClient
 
-            print(f"   Uploading: {Path(local_file_path).name}...")
-            # Implementation here
+            client = DataLakeServiceClient(account_url=self.account_url, credential=self.credential)
+            file_system = f"{self.workspace_name}/{self.lakehouse_name}/Files"
+            file_system_client = client.get_file_system_client(file_system=file_system)
+
+            file_size_mb = Path(local_file_path).stat().st_size / (1024 * 1024)
+
+            with open(local_file_path, 'rb') as data:
+                file_system_client.upload_file(path=lakehouse_path, file_contents=data, overwrite=True)
+
+            print(f"   ✅ {Path(local_file_path).name:<45} ({file_size_mb:>6.2f} MB)")
             return True
+
         except Exception as e:
-            print(f"   ❌ Upload error: {e}")
+            print(f"   ❌ {Path(local_file_path).name:<45} Error: {str(e)}")
             return False
 
     def upload_directory(self, local_dir: str, lakehouse_path: str) -> bool:
-        """Upload directory"""
+        """Upload all files from a directory"""
         try:
-            print(f"   Uploading directory: {local_dir}...")
-            # Implementation here
-            return True
+            local_path = Path(local_dir)
+            if not local_path.exists():
+                print(f"   ❌ Directory not found: {local_dir}")
+                return False
+
+            uploaded_count = 0
+            for file_path in local_path.glob("*.csv"):
+                remote_path = f"{lakehouse_path}/{file_path.name}"
+                if self.upload_file_to_lakehouse(str(file_path), remote_path):
+                    uploaded_count += 1
+
+            return uploaded_count > 0
+
         except Exception as e:
-            print(f"   ❌ Upload error: {e}")
+            print(f"   ❌ Directory upload error: {str(e)}")
             return False
+
+
+# ============================================================================
+# UPLOAD RAW BRONZE FUNCTION
+# ============================================================================
+
+def upload_raw_bronze_to_lakehouse(workspace_name: str = "fabricaena", lakehouse_name: str = "githubclaude"):
+    """Upload existing raw_bronze CSV files directly to Fabric Lakehouse"""
+
+    print("\n" + "=" * 70)
+    print("📤 UPLOADING RAW BRONZE FILES TO LAKEHOUSE")
+    print("=" * 70)
+
+    raw_bronze_dir = PROJECT_ROOT / "01_DataLayer" / "raw_bronze"
+
+    # Check directory
+    if not raw_bronze_dir.exists():
+        print(f"❌ Error: Directory not found: {raw_bronze_dir}")
+        return False
+
+    # List files
+    csv_files = list(raw_bronze_dir.glob("*.csv"))
+    if not csv_files:
+        print(f"❌ No CSV files found in: {raw_bronze_dir}")
+        return False
+
+    print(f"\n📁 Source: {raw_bronze_dir}")
+    print(f"📍 Target: {workspace_name}/{lakehouse_name}/Files/Raw_bronze")
+    print(f"📊 Files: {len(csv_files)}")
+
+    # Show files
+    total_size = 0
+    for csv_file in sorted(csv_files):
+        size_mb = csv_file.stat().st_size / (1024 * 1024)
+        total_size += csv_file.stat().st_size
+        print(f"   ✓ {csv_file.name:<45} ({size_mb:>7.2f} MB)")
+
+    print(f"\n   Total: {total_size / (1024 * 1024):.2f} MB")
+
+    # Confirm
+    print("\n" + "=" * 70)
+    response = input("👉 Continue with upload? (yes/no): ").strip().lower()
+    if response != "yes":
+        print("❌ Upload cancelled")
+        return False
+
+    # Connect and upload
+    print("\n🔄 Uploading files...")
+    print("-" * 70)
+
+    try:
+        uploader = FabricLakehouseUploader(workspace_name, lakehouse_name)
+
+        # Upload all files
+        uploaded = uploader.upload_directory(str(raw_bronze_dir), "Raw_bronze")
+
+        if uploaded:
+            print("-" * 70)
+            print("\n✅ Upload Complete!")
+            print(f"\n📍 Access your files:")
+            print(f"   Workspace: {workspace_name}")
+            print(f"   Lakehouse: {lakehouse_name}")
+            print(f"   Folder: Files/Raw_bronze")
+            print(f"\n✅ All raw CSV files are now in Fabric Lakehouse!")
+            return True
+        else:
+            print("\n❌ Upload failed - see errors above")
+            return False
+
+    except Exception as e:
+        print(f"\n❌ Upload error: {str(e)}")
+        print("\n⚠️  Troubleshooting:")
+        print("   1. Ensure Azure credentials are configured: az login")
+        print("   2. Check workspace and lakehouse names are correct")
+        print("   3. Verify you have permissions to the Lakehouse")
+        return False
 
 
 # ============================================================================
