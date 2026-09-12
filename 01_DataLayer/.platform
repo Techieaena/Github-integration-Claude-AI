@@ -1,0 +1,14 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/lakehouse/1.0/schema.json",
+  "metadata": {
+    "type": "Lakehouse",
+    "displayName": "01_DataLayer",
+    "description": "E-Commerce Analytics Data Layer - Bronze and Silver transformations",
+    "version": "1.0"
+  },
+  "config": {
+    "format": "Delta",
+    "environment": "Development",
+    "owner": "Analytics Team"
+  }
+}

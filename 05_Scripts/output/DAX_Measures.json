@@ -1,0 +1,41 @@
+{
+  "Financial Metrics": {
+    "Total Revenue": "SUM(Sales[net_sales])",
+    "Total Profit": "SUM(Sales[profit])",
+    "Total Cost": "SUM(Sales[product_cost])",
+    "Profit Margin %": "DIVIDE([Total Profit], [Total Revenue], 0)",
+    "Total Discount": "SUM(Sales[discount_amount])",
+    "Total Tax": "SUM(Sales[tax_amount])",
+    "Total Shipping": "SUM(Sales[shipping_cost])",
+    "Gross Sales": "SUM(Sales[gross_sales])"
+  },
+  "Order Metrics": {
+    "Total Orders": "COUNTA(Sales[order_id])",
+    "Avg Order Value": "DIVIDE([Total Revenue], [Total Orders], 0)",
+    "Total Quantity": "SUM(Sales[quantity])",
+    "Completed Orders": "CALCULATE(COUNTA(Sales[order_id]), Sales[order_status]=\"Completed\")",
+    "Order Completion Rate": "DIVIDE([Completed Orders], [Total Orders], 0)",
+    "Avg Items Per Order": "DIVIDE([Total Quantity], [Total Orders], 0)"
+  },
+  "Customer Metrics": {
+    "Unique Customers": "DISTINCTCOUNT(Sales[customer_id])",
+    "Revenue per Customer": "DIVIDE([Total Revenue], [Unique Customers], 0)",
+    "Profit per Customer": "DIVIDE([Total Profit], [Unique Customers], 0)",
+    "Avg Customer Rating": "AVERAGE(Sales[customer_rating])",
+    "Repeat Customers": "CALCULATE(DISTINCTCOUNT(Sales[customer_id]), FILTER(Sales, Sales[is_repeat_customer]=\"True\"))",
+    "Repeat Customer Rate": "DIVIDE([Repeat Customers], [Unique Customers], 0)"
+  },
+  "Quality Metrics": {
+    "Return Rate": "DIVIDE(CALCULATE(COUNTA(Sales[order_id]), Sales[return_status]=\"Returned\"), [Total Orders], 0)",
+    "On-Time Delivery Rate": "DIVIDE(CALCULATE(COUNTA(Sales[order_id]), Sales[delivery_status]=\"On Time\"), [Total Orders], 0)",
+    "On-Time Delivery Count": "CALCULATE(COUNTA(Sales[order_id]), Sales[delivery_status]=\"On Time\")",
+    "Return Count": "CALCULATE(COUNTA(Sales[order_id]), Sales[return_status]=\"Returned\")"
+  },
+  "Time Intelligence": {
+    "Revenue YTD": "CALCULATE([Total Revenue], DATESYTD(Calendar[Date]))",
+    "Profit YTD": "CALCULATE([Total Profit], DATESYTD(Calendar[Date]))",
+    "Orders YTD": "CALCULATE([Total Orders], DATESYTD(Calendar[Date]))",
+    "Revenue YoY Growth %": "DIVIDE(CALCULATE([Total Revenue], DATEADD(Calendar[Date], -1, YEAR)) - [Total Revenue], CALCULATE([Total Revenue], DATEADD(Calendar[Date], -1, YEAR)), 0)",
+    "Revenue MoM Growth %": "DIVIDE([Total Revenue] - CALCULATE([Total Revenue], DATEADD(Calendar[Date], -1, MONTH)), CALCULATE([Total Revenue], DATEADD(Calendar[Date], -1, MONTH)), 0)"
+  }
+}

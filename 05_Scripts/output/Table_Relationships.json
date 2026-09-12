@@ -1,0 +1,20 @@
+{
+  "Relationship_1": {
+    "name": "FK_Sales_Customers",
+    "from_table": "Sales",
+    "from_column": "customer_id",
+    "to_table": "Customers",
+    "to_column": "customer_id",
+    "cardinality": "Many-to-One (*:1)",
+    "cross_filter": "Bidirectional"
+  },
+  "Relationship_2": {
+    "name": "FK_Sales_Products",
+    "from_table": "Sales",
+    "from_column": "product_id",
+    "to_table": "Products",
+    "to_column": "product_id",
+    "cardinality": "Many-to-One (*:1)",
+    "cross_filter": "Bidirectional"
+  }
+}

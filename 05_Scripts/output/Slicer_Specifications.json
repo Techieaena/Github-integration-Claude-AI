@@ -1,0 +1,37 @@
+{
+  "Date_Slicer": {
+    "name": "Date Range",
+    "field": "Sales[order_date]",
+    "type": "DateSlicer",
+    "style": "Between",
+    "sync_all_pages": true
+  },
+  "Segment_Slicer": {
+    "name": "Customer Segment",
+    "field": "Customers[customer_segment]",
+    "type": "DropdownSlicer",
+    "style": "List",
+    "sync_all_pages": true
+  },
+  "Region_Slicer": {
+    "name": "Region",
+    "field": "Customers[region]",
+    "type": "DropdownSlicer",
+    "style": "Dropdown",
+    "sync_all_pages": true
+  },
+  "Channel_Slicer": {
+    "name": "Sales Channel",
+    "field": "Sales[sales_channel]",
+    "type": "DropdownSlicer",
+    "style": "Buttons",
+    "sync_all_pages": true
+  },
+  "Category_Slicer": {
+    "name": "Product Category",
+    "field": "Products[product_category]",
+    "type": "DropdownSlicer",
+    "style": "Dropdown",
+    "sync_all_pages": true
+  }
+}

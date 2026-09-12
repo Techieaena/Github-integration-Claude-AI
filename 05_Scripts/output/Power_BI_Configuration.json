@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "project_name": "E-Commerce Analytics Platform",
+    "created_date": "2026-09-12T20:37:48.785660",
+    "version": "1.0",
+    "author": "Claude Code - Automated Power BI Builder",
+    "description": "Interactive 5-page analytics dashboard for e-commerce sales and customer analytics"
+  },
+  "data_sources": {
+    "Customers": {
+      "source_type": "CSV",
+      "path": "C:\\Users\\admin\\GithubclaudeAI\\01_DataLayer\\raw_bronze\\customer_master.csv",
+      "rows": 25000,
+      "size_mb": 2.12
+    },
+    "Products": {
+      "source_type": "CSV",
+      "path": "C:\\Users\\admin\\GithubclaudeAI\\01_DataLayer\\raw_bronze\\product_catalog.csv",
+      "rows": 1175,
+      "size_mb": 0.15
+    },
+    "Sales": {
+      "source_type": "CSV",
+      "path": "C:\\Users\\admin\\GithubclaudeAI\\01_DataLayer\\raw_bronze\\order_items.csv",
+      "rows": 397569,
+      "size_mb": 35.2
+    }
+  },
+  "data_model": {
+    "tables": 3,
+    "relationships": 2,
+    "measures": 29,
+    "columns_estimated": 35
+  },
+  "report_structure": {
+    "pages": 5,
+    "visualizations": 18,
+    "slicers": 5,
+    "kpi_cards": 4,
+    "charts": 14
+  },
+  "configuration_files": {
+    "dax_measures": "C:\\Users\\admin\\GithubclaudeAI\\05_Scripts\\output\\DAX_Measures.json",
+    "report_pages": "C:\\Users\\admin\\GithubclaudeAI\\05_Scripts\\output\\Report_Pages_Specification.json",
+    "slicers": "C:\\Users\\admin\\GithubclaudeAI\\05_Scripts\\output\\Slicer_Specifications.json",
+    "relationships": "C:\\Users\\admin\\GithubclaudeAI\\05_Scripts\\output\\Table_Relationships.json"
+  }
+}

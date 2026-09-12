@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/documentation/1.0/schema.json",
+  "metadata": {
+    "type": "Documentation",
+    "displayName": "04_Documentation",
+    "description": "E-Commerce Analytics Project Documentation - Implementation guides and references",
+    "version": "1.0"
+  },
+  "config": {
+    "documentType": "Project Documentation",
+    "sections": [
+      "Implementation Guides",
+      "Quick References",
+      "Data Quality Reports",
+      "Schema Documentation"
+    ],
+    "owner": "Analytics Team",
+    "status": "Production Ready"
+  }
+}

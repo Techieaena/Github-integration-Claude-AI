@@ -1,0 +1,33 @@
+{
+	"servers": {
+		"com.microsoft/microsoft-fabric": {
+			"type": "stdio",
+			"command": "dnx",
+			"args": [
+				"Microsoft.Fabric.Mcp@1.4.0",
+				"--yes",
+				"--",
+				"server",
+				"start"
+			],
+			"gallery": "https://api.mcp.github.com",
+			"version": "1.4.0"
+		},
+		"local/fabric-rest": {
+			"type": "stdio",
+			"command": "uv",
+			"args": [
+				"run",
+				"--with",
+				"azure-identity",
+				"--with",
+				"httpx",
+				"${workspaceFolder}/05_Scripts/custom_fabric_mcp_server.py"
+			],
+			"env": {
+				"FABRIC_AUTH_MODE": "interactive"
+			}
+		}
+	},
+	"inputs": []
+}

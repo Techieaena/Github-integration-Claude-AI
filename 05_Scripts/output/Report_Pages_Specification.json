@@ -1,0 +1,225 @@
+{
+  "Page1_ExecutiveOverview": {
+    "title": "Executive Overview",
+    "description": "High-level KPIs and business health snapshot",
+    "visualizations": [
+      {
+        "type": "Card",
+        "measure": "Total Revenue",
+        "title": "Total Revenue",
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "type": "Card",
+        "measure": "Total Orders",
+        "title": "Total Orders",
+        "position": [
+          1,
+          0
+        ]
+      },
+      {
+        "type": "Card",
+        "measure": "Unique Customers",
+        "title": "Unique Customers",
+        "position": [
+          2,
+          0
+        ]
+      },
+      {
+        "type": "Card",
+        "measure": "Profit Margin %",
+        "title": "Profit Margin",
+        "position": [
+          3,
+          0
+        ]
+      },
+      {
+        "type": "LineChart",
+        "title": "Revenue Trend",
+        "axis": "Sales[order_date]",
+        "value": "[Total Revenue]",
+        "position": [
+          0,
+          1
+        ]
+      },
+      {
+        "type": "PieChart",
+        "title": "Sales by Channel",
+        "legend": "Sales[sales_channel]",
+        "values": "[Total Revenue]",
+        "position": [
+          2,
+          1
+        ]
+      }
+    ]
+  },
+  "Page2_SalesAnalysis": {
+    "title": "Sales Analysis",
+    "description": "Deep dive into revenue and profitability",
+    "visualizations": [
+      {
+        "type": "ColumnChart",
+        "title": "Revenue by Category",
+        "axis": "Products[product_category]",
+        "value": "[Total Revenue]",
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "type": "Table",
+        "title": "Top 20 Products",
+        "columns": [
+          "product_name",
+          "product_category",
+          "[Total Revenue]",
+          "[Total Profit]",
+          "[Profit Margin %]"
+        ],
+        "position": [
+          0,
+          1
+        ]
+      },
+      {
+        "type": "ScatterChart",
+        "title": "Discount vs Profit",
+        "x_axis": "Sales[discount_amount]",
+        "y_axis": "[Profit Margin %]",
+        "size": "[Total Revenue]",
+        "position": [
+          1,
+          0
+        ]
+      }
+    ]
+  },
+  "Page3_CustomerAnalytics": {
+    "title": "Customer Analytics",
+    "description": "Customer behavior and segmentation analysis",
+    "visualizations": [
+      {
+        "type": "ColumnChart",
+        "title": "Customers by Segment",
+        "axis": "Customers[customer_segment]",
+        "value": "[Unique Customers]",
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "type": "Map",
+        "title": "Revenue by Region",
+        "location": "Customers[region]",
+        "size": "[Total Revenue]",
+        "position": [
+          1,
+          0
+        ]
+      },
+      {
+        "type": "Table",
+        "title": "Top 20 Customers",
+        "columns": [
+          "customer_id",
+          "customer_segment",
+          "[Total Revenue]"
+        ],
+        "position": [
+          0,
+          1
+        ]
+      }
+    ]
+  },
+  "Page4_ProductPerformance": {
+    "title": "Product Performance",
+    "description": "Product-level metrics and optimization",
+    "visualizations": [
+      {
+        "type": "ColumnChart",
+        "title": "Revenue by Category",
+        "axis": "Products[product_category]",
+        "value": "[Total Revenue]",
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "type": "BarChart",
+        "title": "Avg Rating by Category",
+        "axis": "Products[product_category]",
+        "value": "AVERAGE(Products[product_rating])",
+        "position": [
+          1,
+          0
+        ]
+      },
+      {
+        "type": "Table",
+        "title": "Product Details",
+        "columns": [
+          "product_name",
+          "product_category",
+          "brand",
+          "product_rating",
+          "[Total Revenue]"
+        ],
+        "position": [
+          0,
+          1
+        ]
+      }
+    ]
+  },
+  "Page5_TimeTrends": {
+    "title": "Time Series & Trends",
+    "description": "Temporal analysis and forecasting context",
+    "visualizations": [
+      {
+        "type": "LineChart",
+        "title": "Revenue Trend",
+        "axis": "Sales[order_date]",
+        "value": "[Total Revenue]",
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "type": "LineChart",
+        "title": "Profit Trend",
+        "axis": "Sales[order_date]",
+        "value": "[Total Profit]",
+        "position": [
+          1,
+          0
+        ]
+      },
+      {
+        "type": "AreaChart",
+        "title": "Revenue vs Profit",
+        "axis": "Sales[order_date]",
+        "values": [
+          "[Total Revenue]",
+          "[Total Profit]"
+        ],
+        "position": [
+          0,
+          1
+        ]
+      }
+    ]
+  }
+}
