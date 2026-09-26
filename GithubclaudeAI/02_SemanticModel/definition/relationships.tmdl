@@ -1,0 +1,9 @@
+relationship FK_FactSales_DimCustomer
+	fromColumn: FactSales[customer_id]
+	toColumn: DimCustomer[customer_id]
+	lineageTag: 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
+
+relationship FK_FactSales_DimDate
+	fromColumn: FactSales[order_date]
+	toColumn: DimDate[FullDate]
+	lineageTag: 2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e

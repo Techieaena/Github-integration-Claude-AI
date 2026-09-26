@@ -1,0 +1,81 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "RefreshDataflow",
+        "typeProperties": {
+          "dataflowId": "e7608470-a2a5-8d0d-49db-ff0a41ef47dc",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "notifyOption": "NoNotification",
+          "dataflowType": "DataflowFabric",
+          "executeMashupQueriesOnly": true
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Dataflow github",
+        "dependsOn": []
+      },
+      {
+        "type": "PBISemanticModelRefresh",
+        "typeProperties": {
+          "method": "POST",
+          "groupId": "9c06c853-c4ee-42ad-b784-9ad3c80e7f1d",
+          "datasetId": "4a12e07b-7af2-4c26-8054-b1944462065f",
+          "commitMode": "Transactional",
+          "objects": [
+            {
+              "table": "calendar"
+            },
+            {
+              "table": "customers"
+            },
+            {
+              "table": "sales"
+            },
+            {
+              "table": "returndelta"
+            },
+            {
+              "table": "Merge"
+            },
+            {
+              "table": "subcat"
+            },
+            {
+              "table": "product"
+            },
+            {
+              "table": "Total Orders YOY Display"
+            }
+          ],
+          "waitOnCompletion": true,
+          "operationType": "SemanticModelRefresh"
+        },
+        "externalReferences": {
+          "connection": "e17244f7-e083-46f4-9c2a-68c3dd41fbfe"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Semantic model github",
+        "dependsOn": [
+          {
+            "activity": "Dataflow github",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

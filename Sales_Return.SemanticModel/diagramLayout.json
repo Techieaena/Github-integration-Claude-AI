@@ -1,0 +1,191 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 2242,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 62
+          },
+          "nodeIndex": "April Returns 2023",
+          "nodeLineageTag": "94647bc3-f468-459a-9b7b-6b099059d1cd",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 284,
+            "y": 0
+          },
+          "nodeIndex": "April Sales 2023",
+          "nodeLineageTag": "2bd8b13b-b4e3-4fd4-8b51-c36acbb206f3",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 86
+          },
+          "nodeIndex": "Dim_Customer",
+          "nodeLineageTag": "77e92399-94af-4264-9b53-4846e399e824",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 852,
+            "y": 98
+          },
+          "nodeIndex": "Dim_Order_ID",
+          "nodeLineageTag": "4024bec6-8ae2-4ebe-8152-09811539fb7b",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1136,
+            "y": 86
+          },
+          "nodeIndex": "Dim_Product",
+          "nodeLineageTag": "ab30cc97-615c-47ec-89bf-b573bd3948dd",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1420,
+            "y": 62
+          },
+          "nodeIndex": "Fact_Returns",
+          "nodeLineageTag": "fe077f28-1d0a-4dea-897e-e47830099cd9",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1704,
+            "y": 0
+          },
+          "nodeIndex": "Fact_Sales",
+          "nodeLineageTag": "81797ead-9e07-47a7-91d7-8a89ce2498c5",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1988,
+            "y": 62
+          },
+          "nodeIndex": "Feb Returns 2023",
+          "nodeLineageTag": "05d508a1-8fac-4158-a854-8b09f7e7733e",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2272,
+            "y": 0
+          },
+          "nodeIndex": "Feb Sales 2023",
+          "nodeLineageTag": "83624e12-9176-4e50-8efa-a02651f6c79c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2556,
+            "y": 62
+          },
+          "nodeIndex": "Jan Returns 2023",
+          "nodeLineageTag": "b525a36e-977e-4a23-8064-8654061ae3d0",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2840,
+            "y": 0
+          },
+          "nodeIndex": "Jan Sales 2023",
+          "nodeLineageTag": "910a1630-4832-4b0a-8d4d-960f47eaf188",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3124,
+            "y": 62
+          },
+          "nodeIndex": "Returns",
+          "nodeLineageTag": "748e436d-cfa5-4c1a-b6a2-69854bf84a6e",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3408,
+            "y": 0
+          },
+          "nodeIndex": "Sales",
+          "nodeLineageTag": "61128645-814a-4aa8-b7a6-ee3132b5e592",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

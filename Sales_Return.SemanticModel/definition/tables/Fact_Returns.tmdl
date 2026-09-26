@@ -1,0 +1,48 @@
+table Fact_Returns
+	lineageTag: fe077f28-1d0a-4dea-897e-e47830099cd9
+	sourceLineageTag: [dbo].[Fact_Returns]
+
+	column Order_ID
+		dataType: string
+		lineageTag: b9891937-5445-483e-a78e-60ae9a68ab5c
+		sourceLineageTag: Order_ID
+		summarizeBy: none
+		sourceColumn: Order_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Name
+		dataType: string
+		lineageTag: ecc9aa7e-5095-4859-b134-3239e26c1fad
+		sourceLineageTag: Customer_Name
+		summarizeBy: none
+		sourceColumn: Customer_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Return
+		dataType: string
+		lineageTag: 062b52f7-a3a5-4a6f-bfba-9cb99eaa6a47
+		sourceLineageTag: Return
+		summarizeBy: none
+		sourceColumn: Return
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales_Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: dc313756-455e-4c68-b344-c81b6620931a
+		sourceLineageTag: Sales_Amount
+		summarizeBy: sum
+		sourceColumn: Sales_Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Returns = entity
+		mode: directLake
+		source
+			entityName: Fact_Returns
+			schemaName: dbo
+			expressionSource: 'DirectLake - Current'
+

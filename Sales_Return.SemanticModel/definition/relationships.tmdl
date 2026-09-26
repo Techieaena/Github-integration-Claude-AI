@@ -1,0 +1,20 @@
+relationship 4efbb95f-de10-1d5b-5e13-fe5bce369121
+	fromColumn: Fact_Sales.Customer_ID
+	toColumn: Dim_Customer.Customer_ID
+
+relationship c327a62f-528e-fcc1-6e6f-11434fe92655
+	fromColumn: Fact_Sales.Customer_Name
+	toColumn: Fact_Returns.Customer_Name
+
+relationship a340f424-7f1b-c7b9-a31b-9702b6912931
+	fromColumn: Fact_Sales.Product
+	toColumn: Dim_Product.Product
+
+relationship 24ed4da4-9952-e657-0a3b-d2ca36c13e06
+	fromColumn: Dim_Order_ID.Order_ID
+	toColumn: 'Feb Returns 2023'.Order_ID
+
+relationship 1bf4cdd5-eec1-d009-9196-5adf796d9b8c
+	fromColumn: Dim_Order_ID.Order_ID
+	toColumn: Fact_Returns.Order_ID
+

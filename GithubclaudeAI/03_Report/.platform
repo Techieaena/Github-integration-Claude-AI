@@ -1,0 +1,16 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/1.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "03_Report",
+    "description": "E-Commerce Analytics Power BI Report - 5 page interactive dashboard",
+    "version": "1.0"
+  },
+  "config": {
+    "pages": 5,
+    "slicers": 5,
+    "visualizations": 35,
+    "theme": "Professional",
+    "owner": "Analytics Team"
+  }
+}

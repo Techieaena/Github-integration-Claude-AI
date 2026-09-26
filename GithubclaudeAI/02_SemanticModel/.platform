@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/semanticmodel/1.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "02_SemanticModel",
+    "description": "E-Commerce Analytics Semantic Model - Star Schema with 30+ DAX measures",
+    "version": "1.0"
+  },
+  "config": {
+    "modelType": "Tabular",
+    "compatibility": "1550",
+    "tables": 4,
+    "relationships": 2,
+    "measures": 30,
+    "owner": "Analytics Team"
+  }
+}

@@ -1,0 +1,59 @@
+table Merge
+	lineageTag: fc4f7306-541d-42ac-a663-ecd81fa3fb67
+	sourceLineageTag: [dbo].[Merge]
+
+	column ProductSubcategoryKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f8b2701-29d5-4b4e-b23f-dd01e427de43
+		sourceLineageTag: ProductSubcategoryKey
+		summarizeBy: none
+		sourceColumn: ProductSubcategoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SubcategoryName
+		dataType: string
+		lineageTag: 85fdb31d-5ada-4cc0-8e19-a1df3442b92a
+		sourceLineageTag: SubcategoryName
+		summarizeBy: none
+		sourceColumn: SubcategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCategoryKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 5b9950ef-77f3-43db-9d32-e428e818b88d
+		sourceLineageTag: ProductCategoryKey
+		summarizeBy: none
+		sourceColumn: ProductCategoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ProductCategoryKey.1'
+		dataType: int64
+		formatString: 0
+		lineageTag: 94291df1-c309-49c8-b727-2bae6dfdbf80
+		sourceLineageTag: ProductCategoryKey.1
+		summarizeBy: none
+		sourceColumn: ProductCategoryKey.1
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryName
+		dataType: string
+		lineageTag: 73383c89-e9e4-4e28-9214-0fdbea4caaff
+		sourceLineageTag: CategoryName
+		summarizeBy: none
+		sourceColumn: CategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Merge = entity
+		mode: directLake
+		source
+			entityName: Merge
+			schemaName: dbo
+			expressionSource: 'DirectLake - gitdatalakehouse'
+

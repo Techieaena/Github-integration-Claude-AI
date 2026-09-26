@@ -1,0 +1,48 @@
+table 'Feb Returns 2023'
+	lineageTag: 05d508a1-8fac-4158-a854-8b09f7e7733e
+	sourceLineageTag: [dbo].[Feb Returns 2023]
+
+	column Order_ID
+		dataType: string
+		lineageTag: 9b916f38-3d11-47dd-9d22-41b94c87bf5e
+		sourceLineageTag: Order_ID
+		summarizeBy: none
+		sourceColumn: Order_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Name
+		dataType: string
+		lineageTag: 95cd245d-ade0-4157-8233-e43e98523baa
+		sourceLineageTag: Customer_Name
+		summarizeBy: none
+		sourceColumn: Customer_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Return
+		dataType: string
+		lineageTag: 95c42885-5efb-401b-9133-7f37519a87a3
+		sourceLineageTag: Return
+		summarizeBy: none
+		sourceColumn: Return
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales_Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: 848194be-79b4-44af-b7cf-28b20bb7c726
+		sourceLineageTag: Sales_Amount
+		summarizeBy: none
+		sourceColumn: Sales_Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Feb Returns 2023' = entity
+		mode: directLake
+		source
+			entityName: Feb Returns 2023
+			schemaName: dbo
+			expressionSource: 'DirectLake - Current'
+

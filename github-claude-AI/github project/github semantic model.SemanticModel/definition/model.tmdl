@@ -1,0 +1,25 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["DirectLake - gitdatalakehouse"]
+
+annotation PBI_ProTooling = ["DirectLakeOnOneLakeInWeb","WebModelingEdit"]
+
+ref table calendar
+ref table sales
+ref table returndelta
+ref table Merge
+ref table subcat
+ref table product
+ref table 'Total Orders YOY Display'
+ref table customers2026
+ref table 'Customers Measures'
+ref table returndelta2026
+

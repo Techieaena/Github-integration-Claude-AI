@@ -1,0 +1,90 @@
+table sales
+	lineageTag: e4b75ab7-2e0d-4aab-a064-4bd32dc941ee
+	sourceLineageTag: [dbo].[sales]
+
+	column OrderNumber
+		dataType: string
+		lineageTag: f47a05d7-7d95-4368-9f98-70e5f2549414
+		sourceLineageTag: OrderNumber
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9a3ea2c5-fb86-4530-a213-3c816c4914f5
+		sourceLineageTag: OrderDate
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8324089a-0f82-4926-957b-7bb2b6a6bfa9
+		sourceLineageTag: StockDate
+		summarizeBy: none
+		sourceColumn: StockDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 977efc1c-03ea-483a-a56c-b691b81fe9e1
+		sourceLineageTag: ProductKey
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: f28364f0-45dc-45ca-87bf-adbf7a8047d8
+		sourceLineageTag: CustomerKey
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryKey
+		dataType: int64
+		formatString: 0
+		lineageTag: b4182051-0cc3-40fa-9a01-f7f18bc04acf
+		sourceLineageTag: TerritoryKey
+		summarizeBy: count
+		sourceColumn: TerritoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderLineItem
+		dataType: int64
+		formatString: 0
+		lineageTag: b9470af0-bf44-40f7-903b-3ee5755d82f0
+		sourceLineageTag: OrderLineItem
+		summarizeBy: sum
+		sourceColumn: OrderLineItem
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderQuantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b7083e9-f4c2-4baa-8e50-eb7a54588052
+		sourceLineageTag: OrderQuantity
+		summarizeBy: sum
+		sourceColumn: OrderQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	partition sales = entity
+		mode: directLake
+		source
+			entityName: sales
+			schemaName: dbo
+			expressionSource: 'DirectLake - gitdatalakehouse'
+

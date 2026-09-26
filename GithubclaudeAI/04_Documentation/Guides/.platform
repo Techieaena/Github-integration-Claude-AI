@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/documentation/1.0/schema.json",
+  "metadata": {
+    "type": "DocumentationGuides",
+    "displayName": "Guides",
+    "description": "Implementation guides and step-by-step instructions",
+    "version": "1.0"
+  },
+  "config": {
+    "documentType": "Implementation Guides",
+    "guides": [
+      "POWER_BI_IMPLEMENTATION_GUIDE.md",
+      "SEMANTIC_UPDATE_GUIDE.md",
+      "PIPELINE_README.md"
+    ],
+    "status": "Production Ready",
+    "owner": "Analytics Team",
+    "lastUpdated": "2026-09-01"
+  }
+}

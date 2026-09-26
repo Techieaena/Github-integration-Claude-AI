@@ -1,0 +1,78 @@
+table DimCustomer
+	lineageTag: 54de41a3-e852-40b1-a4b0-1a1f7b8c5d3e
+	sourceLineage
+		removed source 0__c3b3e2c2-0ba8-4fd4-8e15-6b3c0f1b7a2d
+
+	measure CustomerId = COUNTA(DimCustomer[customer_id])
+		lineageTag: 2c8f1a5d-9b4e-4a2f-8e1c-3a6d7b9e2f1a
+		formatString: 0
+
+	column customer_id
+		dataType: string
+		lineageTag: 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
+		sourceColumn: customer_id
+		summarizeBy: none
+		isKey: true
+
+	column customer_name
+		dataType: string
+		lineageTag: 2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e
+		sourceColumn: customer_name
+		summarizeBy: none
+
+	column customer_age
+		dataType: int64
+		lineageTag: 3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f
+		sourceColumn: customer_age
+		summarizeBy: Average
+
+	column gender
+		dataType: string
+		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+		sourceColumn: gender
+		summarizeBy: none
+
+	column customer_segment
+		dataType: string
+		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
+		sourceColumn: customer_segment
+		summarizeBy: none
+
+	column customer_city
+		dataType: string
+		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
+		sourceColumn: customer_city
+		summarizeBy: none
+
+	column customer_state
+		dataType: string
+		lineageTag: 7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d
+		sourceColumn: customer_state
+		summarizeBy: none
+
+	column customer_country
+		dataType: string
+		lineageTag: 8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e
+		sourceColumn: customer_country
+		summarizeBy: none
+
+	column region
+		dataType: string
+		lineageTag: 9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f
+		sourceColumn: region
+		summarizeBy: none
+
+	column customer_postal_code
+		dataType: string
+		lineageTag: 0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a
+		sourceColumn: customer_postal_code
+		summarizeBy: none
+
+	column customer_acquisition_cost
+		dataType: double
+		lineageTag: 1e2f3a4b-5c6d-7e8f-9a0b-1c2d3e4f5a6b
+		sourceColumn: customer_acquisition_cost
+		summarizeBy: Sum
+		formatString: 0.00
+
+	annotation PBI_Id = "2c8f1a5d-9b4e-4a2f-8e1c-3a6d7b9e2f1a"
