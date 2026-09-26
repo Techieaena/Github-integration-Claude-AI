@@ -15,6 +15,7 @@ from datetime import datetime
 from typing import List, Dict, Optional
 import pandas as pd
 import numpy as np
+from deltalake import write_deltalake
 from azure.identity import DefaultAzureCredential
 from azure.storage.filedatalake import DataLakeServiceClient
 import kagglehub
@@ -39,9 +40,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 TRANSFORMED_FILES_DIR = PROJECT_ROOT / "01_DataLayer" / "Transformed_files"
 
 # Lakehouse Paths
-BRONZE_PATH = "Files/Bronze"
-SILVER_PATH = "Files/Silver"
-GOLD_PATH = "Files/Gold"
+BRONZE_PATH = "Files/Raw_bronze"
+TABLES_PATH = "Tables/NewSchema"
 LOGS_PATH = "Files/Logs"
 
 
@@ -307,8 +307,11 @@ class SilverLayer:
                 parquet_path.mkdir(parents=True, exist_ok=True)
                 df.to_parquet(parquet_path / "part-00000.parquet", index=False)
 
-                lakehouse_path = f"{SILVER_PATH}/{name}.parquet"
-                uploader.upload_directory(str(parquet_path), lakehouse_path)
+                delta_path = TRANSFORMED_FILES_DIR / "delta_tables" / "Silver" / name
+                write_deltalake(str(delta_path), df, mode="overwrite")
+
+                lakehouse_path = f"{TABLES_PATH}/Silver_{name}"
+                uploader.upload_directory(str(delta_path), lakehouse_path)
 
                 saved_files[name] = lakehouse_path
                 print(f"   ✓ Saved: {name} → {lakehouse_path}")
@@ -433,12 +436,11 @@ class GoldLayer:
 
         for name, df in analytics.items():
             try:
-                parquet_path = TRANSFORMED_FILES_DIR / f"temp_{name}.parquet"
-                parquet_path.mkdir(parents=True, exist_ok=True)
-                df.to_parquet(parquet_path / "part-00000.parquet", index=False)
+                delta_path = TRANSFORMED_FILES_DIR / "delta_tables" / "Gold" / name
+                write_deltalake(str(delta_path), df, mode="overwrite")
 
-                lakehouse_path = f"{GOLD_PATH}/{name}.parquet"
-                uploader.upload_directory(str(parquet_path), lakehouse_path)
+                lakehouse_path = f"{TABLES_PATH}/{name}"
+                uploader.upload_directory(str(delta_path), lakehouse_path)
 
                 saved_files[name] = lakehouse_path
                 print(f"   ✓ Saved: {name} → {lakehouse_path}")
@@ -462,7 +464,7 @@ class FabricLakehouseUploader:
 
         self.workspace_name = workspace_name
         self.lakehouse_name = lakehouse_name
-        self.account_url = "https://onelake.dfs.core.windows.net"
+        self.account_url = "https://onelake.dfs.fabric.microsoft.com"
 
         # Try default credential first, fall back to browser auth
         try:
@@ -478,13 +480,13 @@ class FabricLakehouseUploader:
             from azure.storage.filedatalake import DataLakeServiceClient
 
             client = DataLakeServiceClient(account_url=self.account_url, credential=self.credential)
-            file_system = f"{self.workspace_name}/{self.lakehouse_name}/Files"
+            file_system = f"{self.workspace_name}/{self.lakehouse_name}.Lakehouse"
             file_system_client = client.get_file_system_client(file_system=file_system)
 
             file_size_mb = Path(local_file_path).stat().st_size / (1024 * 1024)
 
             with open(local_file_path, 'rb') as data:
-                file_system_client.upload_file(path=lakehouse_path, file_contents=data, overwrite=True)
+                file_system_client.get_file_client(lakehouse_path).upload_data(data, overwrite=True)
 
             print(f"   ✅ {Path(local_file_path).name:<45} ({file_size_mb:>6.2f} MB)")
             return True
@@ -502,8 +504,11 @@ class FabricLakehouseUploader:
                 return False
 
             uploaded_count = 0
-            for file_path in local_path.glob("*.csv"):
-                remote_path = f"{lakehouse_path}/{file_path.name}"
+            for file_path in local_path.rglob("*"):
+                if not file_path.is_file():
+                    continue
+                relative_path = file_path.relative_to(local_path).as_posix()
+                remote_path = f"{lakehouse_path}/{relative_path}"
                 if self.upload_file_to_lakehouse(str(file_path), remote_path):
                     uploaded_count += 1
 
@@ -566,7 +571,7 @@ def upload_raw_bronze_to_lakehouse(workspace_name: str = "fabricaena", lakehouse
         uploader = FabricLakehouseUploader(workspace_name, lakehouse_name)
 
         # Upload all files
-        uploaded = uploader.upload_directory(str(raw_bronze_dir), "Raw_bronze")
+        uploaded = uploader.upload_directory(str(raw_bronze_dir), "Files/Raw_bronze")
 
         if uploaded:
             print("-" * 70)

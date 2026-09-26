@@ -11,7 +11,13 @@
 				"start"
 			],
 			"gallery": "https://api.mcp.github.com",
-			"version": "1.4.0"
+			"version": "1.4.0",
+			"env": {
+				"FABRIC_WORKSPACE_ID": "9c06c853-c4ee-42ad-b784-9ad3c80e7f1d",
+				"FABRIC_LAKEHOUSE_ID": "0b4f9e6c-379c-493f-b707-0c857c8b8041",
+				"FABRIC_TENANT_ID": "30afeb3b-d029-4c64-857b-bb0ad14b9a85",
+				"FABRIC_AUTH_MODE": "interactive"
+			}
 		},
 		"local/fabric-rest": {
 			"type": "stdio",
@@ -19,13 +25,15 @@
 			"args": [
 				"run",
 				"--with",
-				"azure-identity",
-				"--with",
 				"httpx",
 				"${workspaceFolder}/05_Scripts/custom_fabric_mcp_server.py"
 			],
 			"env": {
-				"FABRIC_AUTH_MODE": "interactive"
+				"FABRIC_WORKSPACE_ID": "9c06c853-c4ee-42ad-b784-9ad3c80e7f1d",
+				"FABRIC_LAKEHOUSE_ID": "0b4f9e6c-379c-493f-b707-0c857c8b8041",
+				"FABRIC_TENANT_ID": "30afeb3b-d029-4c64-857b-bb0ad14b9a85",
+				"SERVICE_PRINCIPAL_ID": "75a565ae-bdad-4d3e-88af-3c26eaae2868",
+				"SERVICE_PRINCIPAL_SECRET": "Zrp8Q~XIXgcGXcJ7RIW384AC9LtVREjWNnT.6cwP"
 			}
 		}
 	},

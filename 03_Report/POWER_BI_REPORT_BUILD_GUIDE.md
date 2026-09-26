@@ -1,382 +1,479 @@
 # 📊 Power BI Report - E-Commerce Analytics Platform Build Guide
+## Connected to Fabric Lakehouse
 
-## Overview
-Complete step-by-step guide to build a 5-page interactive Power BI report connected to the new semantic model with star schema (32+ DAX measures, 3 relationships).
+Complete step-by-step guide to build a 5-page interactive Power BI report connected to the **Fabric GitClaude lakehouse** with 8 tables, 180+ columns, and 46 DAX measures.
 
 **Report Specifications:**
+- **Data Source:** Fabric Lakehouse (githubclaude)
+- **Tables:** 8 (2 fact tables, 5 dimension tables, 1 reference table)
+- **Total Rows:** 338,292 (138,116 orders/sales + 25,000 customers + 1,175 products)
 - **Pages:** 5 (Executive Overview, Sales Analysis, Customer Analytics, Product Performance, Time Trends)
-- **Visualizations:** 18+ interactive charts and tables
-- **Slicers:** 5 (Date Range, Customer Segment, Geographic Region, Product Category, Order Status)
-- **Measures:** 32 DAX formulas across 6 categories
-- **Data Source:** Semantic model in 02_SemanticModel/ (star schema: 5 tables, 138K fact rows)
+- **Visualizations:** 20+ interactive charts and tables
+- **Slicers:** 6 (Date Range, Customer Segment, Region, Category, Order Status, Channel)
+- **Measures:** 40+ DAX formulas
 
 ---
 
 ## 📋 Prerequisites
 
 ✅ Power BI Desktop (Latest version)  
-✅ Semantic Model Created (02_SemanticModel/ folder)  
-✅ Data Layer Complete (01_DataLayer/transformed_silver/ with 4 CSV files)  
-✅ TMDL Model Files Ready:
-- `database.tmdl`, `model.tmdl`, `relationships.tmdl`
-- `tables/DimCustomer.tmdl`, `DimProduct.tmdl`, `DimDate.tmdl`, `FactSales.tmdl`, `Measures.tmdl`
-- `cultures/en-US.tmdl`
+✅ Fabric Workspace Access (fabricaena)  
+✅ Lakehouse Access (githubclaude - ID: 0b4f9e6c-379c-493f-b707-0c857c8b8041)  
+✅ Service Principal Credentials (for automated refresh)  
+✅ Semantic Model Schema (02_SemanticModel/semantic_model.json)
 
 ---
 
-## 🔌 Connection Setup (Option A: Connect to Semantic Model)
+## 🔌 Connection Setup - Fabric Lakehouse
 
 ### Step 1: Open Power BI Desktop
 ```
 File → New Report (Blank)
 ```
 
-### Step 2: Get Data from Semantic Model
+### Step 2: Connect to Fabric Lakehouse
 ```
-Home → Get Data → Analysis Services or Power BI Datasets
-Server/Dataset: [Your Fabric workspace path]
-Database: E-Commerce Analytics
-Select table:
-  ☑ DimCustomer
-  ☑ DimProduct
-  ☑ DimDate
-  ☑ FactSales
-  ☑ Measures
-Click Load
+Home → Get Data → Azure → Fabric Lakehouse
+Server: app.fabric.microsoft.com
+Workspace: fabricaena
+Lakehouse: githubclaude
 ```
 
-**Relationships Auto-Populate:**
-- FactSales[customer_id] → DimCustomer[customer_id]
-- FactSales[product_id] → DimProduct[product_id]
-- FactSales[order_date] → DimDate[FullDate]
+### Step 3: Select Tables
+Select these tables from the lakehouse:
+- ☑ **orders** (138,116 rows - fact table)
+- ☑ **sales** (138,116 rows - fully denormalized fact table)
+- ☑ **customers** (25,000 rows - dimension)
+- ☑ **products** (1,175 rows - dimension)
+- ☑ **customer_analytics** (25,000 rows - dimension with aggregates)
+- ☑ **product_analytics** (1,175 rows - dimension with aggregates)
+- ☑ **sales_analytics** (138,116 rows - extended fact table)
+
+**Note:** `dataset_statistics` is optional (contains 1 row with aggregate metrics)
+
+### Step 4: Load and Transform
+```
+Click: Load to Power BI
+Wait for data to import (~1-2 minutes)
+```
 
 ---
 
-## 🔌 Connection Setup (Option B: Direct CSV Load)
+## 📐 Table Structure & Relationships
 
-### Step 1: Load Customer Data
+### Dimension Tables
+
+**📦 customers (25,000 rows)**
+- customer_id (PK)
+- customer_name, customer_age, gender
+- customer_segment (Premium/Regular)
+- customer_city, customer_state, customer_country, region
+- customer_postal_code
+- customer_acquisition_cost
+
+**📦 products (1,175 rows)**
+- product_id (PK)
+- product_name, product_category, product_subcategory
+- brand, supplier
+- unit_price, product_cost
+- product_rating (0-5 scale)
+
+**📦 customer_analytics (25,000 rows)**
+- customer_id
+- All customer dimension fields (denormalized)
+- total_orders, total_spent, avg_order_value
+
+**📦 product_analytics (1,175 rows)**
+- product_id
+- All product dimension fields (denormalized)
+- times_sold, total_quantity
+
+### Fact Tables
+
+**📊 orders (138,116 rows) - Normalized Fact**
+- order_id (PK)
+- product_id (FK)
+- quantity, unit_price
+- discount_percentage, discount_amount
+- gross_sales, tax_amount, shipping_cost
+- net_sales, product_cost
+- profit
+
+**📊 sales (138,116 rows) - Fully Denormalized Fact**
+- order_id, order_date, order_time
+- order_status, sales_channel
+- customer_id + all customer fields (name, age, segment, city, state, country, region)
+- product_id + product name (via denormalization)
+- payment_method, payment_status
+- shipping_method, warehouse, delivery_days, delivery_status
+- return_status, return_reason
+- customer_rating, review_sentiment
+- marketing_channel, campaign_name, coupon_code
+- loyalty_points_earned, loyalty_points_redeemed
+- All financial metrics (gross_sales, net_sales, profit, etc.)
+- customer_lifetime_value, is_repeat_customer
+
+**📊 sales_analytics (138,116 rows) - Extended Fact**
+- All sales columns + month field for time analysis
+
+### Recommended Relationships
+
 ```
-Home → Get Data → Text/CSV
-Browse: C:\Users\admin\GithubclaudeAI\01_DataLayer\transformed_silver\customer_master.csv
-Load → Rename to: DimCustomer
+Create these relationships in Power BI:
+
+1. orders[product_id] → products[product_id] (Many-to-One)
+   Cross Filter: Both
+
+2. sales[product_id] → products[product_id] (Many-to-One)
+   Cross Filter: Both
+
+3. orders[customer_id] → customers[customer_id] (Many-to-One)
+   Cross Filter: Both
+
+4. sales[customer_id] → customers[customer_id] (Many-to-One)
+   Cross Filter: Both
 ```
 
-### Step 2: Load Product Data
-```
-Home → Get Data → Text/CSV
-Browse: product_catalog.csv
-Load → Rename to: DimProduct
-```
+**Note:** Since `sales` is fully denormalized, you may not need all relationships. Use `orders` for detailed drill-down analysis.
 
-### Step 3: Load Date Dimension (Optional - Create in Power Query)
-```
-New Table (Power Query):
+---
+
+## 📅 Create Date Table (Required)
+
+Power Query M Formula:
+```m
 let
-  StartDate = #date(2020,1,1),
-  EndDate = #date(2025,12,31),
+  StartDate = #date(2023,1,1),
+  EndDate = #date(2026,12,31),
   DateList = List.Dates(StartDate, Duration.Days(EndDate-StartDate)+1, #duration(1,0,0,0)),
-  DateTable = Table.FromList(DateList, Splitter.SplitByNothing(), {"FullDate"}),
-  WithYear = Table.AddColumn(DateTable, "Year", each Date.Year([FullDate])),
-  WithMonth = Table.AddColumn(WithYear, "Month", each Date.Month([FullDate])),
-  WithMonthName = Table.AddColumn(WithMonth, "MonthName", each Text.Proper(Date.MonthName([FullDate]))),
-  WithQuarter = Table.AddColumn(WithMonthName, "Quarter", each "Q"&Text.From(Date.QuarterOfYear([FullDate])))
+  DateTable = Table.FromList(DateList, Splitter.SplitByNothing(), {"Date"}),
+  WithYear = Table.AddColumn(DateTable, "Year", each Date.Year([Date])),
+  WithMonth = Table.AddColumn(WithYear, "Month", each Date.Month([Date])),
+  WithMonthName = Table.AddColumn(WithMonth, "MonthName", each Text.Proper(Date.MonthName([Date]))),
+  WithQuarter = Table.AddColumn(WithMonthName, "Quarter", each "Q"&Text.From(Date.QuarterOfYear([Date]))),
+  WithDayName = Table.AddColumn(WithQuarter, "DayName", each Text.Proper(Date.DayOfWeekName([Date]))),
+  WithWeekNum = Table.AddColumn(WithDayName, "WeekNum", each Date.WeekOfYear([Date]))
 in
-  WithQuarter
+  WithWeekNum
 ```
 
-### Step 4: Load Sales Data
+Link to orders/sales tables:
 ```
-Home → Get Data → Text/CSV
-Browse: order_items.csv
-Load → Rename to: FactSales
-```
-
-### Step 5: Create Relationships
-```
-Modeling → Manage Relationships
-
-Relationship 1:
-  From: FactSales[customer_id] → To: DimCustomer[customer_id]
-  Cardinality: Many-to-One
-  Cross Filter Direction: Both
-
-Relationship 2:
-  From: FactSales[product_id] → To: DimProduct[product_id]
-  Cardinality: Many-to-One
-  Cross Filter Direction: Both
-
-Relationship 3:
-  From: FactSales[order_date] → To: DimDate[FullDate]
-  Cardinality: Many-to-One
-  Cross Filter Direction: Both
+Date table[Date] → orders[order_date] (Many-to-One)
+Date table[Date] → sales[order_date] (Many-to-One)
 ```
 
 ---
 
-## 📐 Create Slicers (5 Total)
+## 📐 Create Slicers (6 Total)
 
 ### Slicer 1: Date Range
 ```
-Insert → Slicer → Dropdown
-Column: DimDate[MonthName]
-Location: Top-left, Page: Executive Overview & Sales Analysis
-Style: Blue theme
+Insert → Slicer → Dropdown or Between
+Column: Date[MonthName] or Date[Date]
+Location: Top-left, All report pages
+Filter: Current year and previous year
 ```
 
 ### Slicer 2: Customer Segment
 ```
 Insert → Slicer → Buttons
-Column: DimCustomer[customer_segment]
+Column: customers[customer_segment]
 Options: Premium, Regular
-Location: Top, Page: All pages
+Location: Top-center, All pages
 ```
 
 ### Slicer 3: Geographic Region
 ```
 Insert → Slicer → Dropdown
-Column: DimCustomer[region]
-Location: Top, Page: Customer Analytics
+Column: customers[region]
+Location: Top, Customer Analytics page
+Multi-select: Enabled
 ```
 
 ### Slicer 4: Product Category
 ```
 Insert → Slicer → Dropdown
-Column: DimProduct[product_category]
-Location: Top, Page: Product Performance
+Column: products[product_category]
+Location: Top, Product Performance page
 ```
 
 ### Slicer 5: Order Status
 ```
 Insert → Slicer → Buttons
-Column: FactSales[order_status]
-Options: Completed, Cancelled
-Location: Top, Page: Sales Analysis
+Column: sales[order_status]
+Options: Completed, Cancelled, etc.
+Location: Top, Sales Analysis page
+```
+
+### Slicer 6: Sales Channel
+```
+Insert → Slicer → Dropdown
+Column: sales[sales_channel]
+Location: Top, Executive Overview page
 ```
 
 ---
 
 ## 📊 Page 1: Executive Overview
 
-**Purpose:** High-level KPIs and business metrics at a glance
+**Purpose:** High-level KPIs and business metrics
 
 ### Visualizations:
 
 **1. Card: Total Revenue**
 ```
-Field: Measures[Total Revenue]
+Field: [Total Net Sales]
+Format: $#,##0
+Conditional Formatting: Green if > threshold
+```
+
+**2. Card: Total Orders**
+```
+Field: [Total Orders]
+Format: #,##0
+```
+
+**3. Card: Unique Customers**
+```
+Field: [Total Unique Customers]
+Format: #,##0
+```
+
+**4. Card: Avg Order Value**
+```
+Field: [Average Order Value]
 Format: $#,##0.00
-Size: Large (48pt font)
-Location: Top-left
 ```
 
-**2. Card: Gross Profit**
+**5. Line Chart: Revenue Trend (30 Days)**
 ```
-Field: Measures[Gross Profit]
-Format: $#,##0.00
-Location: Top-center
-```
-
-**3. Card: Total Orders**
-```
-Field: Measures[Total Orders]
-Format: 0
-Location: Top-right
+X-Axis: Date[MonthName] or sales[order_date]
+Y-Axis: [Total Net Sales]
+Legend: sales_channel
+Title: "Revenue Trend by Channel"
 ```
 
-**4. Card: Unique Customers**
+**6. Donut Chart: Orders by Status**
 ```
-Field: Measures[Total Unique Customers]
-Format: 0
-Location: Middle-left
-```
-
-**5. Line Chart: Revenue Trend**
-```
-X-Axis: DimDate[Month] (sorted by Month)
-Y-Axis: Measures[Total Revenue]
-Location: Middle (wide span)
-Title: "30-Day Revenue Trend"
-Tooltips: Month, Revenue, Orders
+Legend: sales[order_status]
+Values: [Total Orders]
+Title: "Order Completion Status"
 ```
 
-**6. Donut Chart: Sales by Segment**
+**7. Column Chart: Top 5 Product Categories by Revenue**
 ```
-Legend: DimCustomer[customer_segment]
-Values: Measures[Total Revenue]
-Location: Bottom-right
-Title: "Revenue Distribution by Customer Segment"
+X-Axis: products[product_category]
+Y-Axis: [Total Net Sales]
+Sort: Descending
+Limit: Top 5
 ```
 
 ---
 
 ## 📈 Page 2: Sales Analysis
 
-**Purpose:** Deep-dive into sales performance, orders, and fulfillment
+**Purpose:** Deep-dive into sales performance and profitability
 
 ### Visualizations:
 
-**7. Table: Top 10 Products by Revenue**
+**8. Table: Top 10 Products by Revenue**
 ```
-Columns: DimProduct[product_name], Measures[Total Sales], Measures[Total Orders], DimProduct[product_rating]
-Sort: Measures[Total Sales] Descending
+Columns:
+  - products[product_name]
+  - [Total Quantity Sold]
+  - [Total Net Sales]
+  - [Profit]
+  - products[product_rating]
+Sort: [Total Net Sales] Descending
 Rows: Top 10
-Location: Left panel
 ```
 
-**8. Clustered Bar Chart: Revenue vs Cost by Category**
+**9. Clustered Bar Chart: Revenue vs Cost by Category**
 ```
-Axis: DimProduct[product_category]
-Values: Measures[Total Revenue], Measures[Total Cost]
-Location: Center
+Axis: products[product_category]
+Values: [Total Net Sales], [Total Product Cost]
 Title: "Profitability by Category"
+Legend: Show
 ```
 
-**9. KPI Visual: Profit Margin**
+**10. KPI Visual: Profit Margin %**
 ```
-Value: Measures[Gross Profit Margin %]
-Trend Axis: DimDate[Year]
-Comparison: Measures[Previous Year Revenue]
-Location: Top-right
+Value: [Profit Margin %]
+Trend Axis: Date[Year]
 Target: 35%
+Status Colors: Green/Yellow/Red
 ```
 
-**10. Combo Chart: Orders & Avg Order Value by Month**
+**11. Combo Chart: Orders & Avg Order Value**
 ```
-X-Axis: DimDate[MonthName]
-Column Values: Measures[Total Orders]
-Line Values: Measures[Average Order Value]
-Location: Bottom
+X-Axis: Date[MonthName]
+Column Values: [Total Orders]
+Line Values: [Average Order Value]
+Title: "Order Volume vs Average Value"
+```
+
+**12. Gauge Chart: Order Completion Rate**
+```
+Value: [Order Completion Rate %]
+Target: 95%
+Min: 0%, Max: 100%
 ```
 
 ---
 
 ## 👥 Page 3: Customer Analytics
 
-**Purpose:** Customer segmentation, acquisition cost, lifetime value
+**Purpose:** Customer segmentation and lifetime value analysis
 
 ### Visualizations:
 
-**11. Matrix: Customer Segmentation Analysis**
+**13. Matrix: Customer Metrics by Segment & Region**
 ```
-Rows: DimCustomer[customer_segment], DimCustomer[customer_city]
-Values: 
-  - Measures[Total Unique Customers]
-  - Measures[Revenue per Customer]
-  - Measures[Customer Acquisition Cost Avg]
-Location: Left/Center
-Expand/collapse enabled
-```
-
-**12. Scatter Plot: Age vs Revenue per Customer**
-```
-X-Axis: DimCustomer[customer_age]
-Y-Axis: Measures[Revenue per Customer]
-Size: Measures[Total Orders]
-Color: DimCustomer[customer_segment]
-Location: Right
+Rows: customers[customer_segment], customers[region]
+Values:
+  - [Total Unique Customers]
+  - [Revenue per Customer]
+  - [Average Order Value]
+  - [Repeat Customer Rate %]
+Expand: Enabled
 ```
 
-**13. Bar Chart: Top 10 Cities by Customer Count**
+**14. Scatter Plot: Customer Age vs Revenue**
 ```
-Axis: DimCustomer[customer_city]
-Values: Measures[Total Unique Customers]
+X-Axis: customers[customer_age]
+Y-Axis: [Revenue per Customer]
+Size: [Total Orders]
+Color: customers[customer_segment]
+Title: "Customer Value by Age Group"
+```
+
+**15. Bar Chart: Top 15 Cities by Customer Count**
+```
+Axis: customers[customer_city]
+Values: [Total Unique Customers]
 Sort: Descending
-Rows: Top 10
-Location: Bottom-left
+Limit: Top 15
 ```
 
-**14. KPI: Premium vs Regular Customers**
+**16. Card Group: Segment Comparison**
 ```
-Card 1: Measures[Premium Customers]
-Card 2: Measures[Regular Customers]
-Location: Top
-Comparison: Ratio display
+Card 1: [Premium Customers]
+Card 2: [Regular Customers]
+Card 3: [Premium/Regular Ratio]
+Card 4: [Premium Customer Avg Revenue]
+```
+
+**17. Line Chart: Customer Acquisition Cost by Segment**
+```
+X-Axis: Date[Year]
+Y-Axis: [Avg Acquisition Cost]
+Legend: customers[customer_segment]
 ```
 
 ---
 
 ## 🏆 Page 4: Product Performance
 
-**Purpose:** Product ratings, category performance, supplier analysis
+**Purpose:** Product ratings, category analysis, supplier metrics
 
 ### Visualizations:
 
-**15. Treemap: Revenue Heatmap by Category & Subcategory**
+**18. Treemap: Revenue Heatmap by Category & Subcategory**
 ```
-Group: DimProduct[product_category]
-Details: DimProduct[product_subcategory]
-Values: Measures[Total Revenue]
-Color Saturation: Measures[Average Product Rating]
-Location: Top (large)
-```
-
-**16. Gauge Chart: Average Product Rating**
-```
-Value: Measures[Average Product Rating]
-Target: 4.5
-Minimum: 0
-Maximum: 5
-Location: Top-right
+Group: products[product_category]
+Details: products[product_subcategory]
+Values: [Total Net Sales]
+Color Saturation: [Average Product Rating]
+Large treemap, top of page
 ```
 
-**17. Horizontal Bar: Top Suppliers by Revenue**
+**19. Gauge Chart: Average Product Rating**
 ```
-Axis: DimProduct[supplier]
-Values: Measures[Total Revenue]
+Value: [Average Product Rating]
+Target: 4.0 stars
+Min: 0, Max: 5
+Title: "Overall Product Quality"
+```
+
+**20. Horizontal Bar: Top 10 Suppliers by Revenue**
+```
+Axis: products[supplier]
+Values: [Total Net Sales]
 Sort: Descending
-Rows: Top 5
-Location: Bottom-left
+Limit: Top 10
 ```
 
-**18. Clustered Column: Unit Price vs Product Cost by Brand**
+**21. Clustered Column: Price vs Cost by Brand**
 ```
-X-Axis: DimProduct[brand]
-Column 1: DimProduct[unit_price]
-Column 2: DimProduct[product_cost]
-Location: Bottom-right
+X-Axis: products[brand]
+Column 1: [Avg Unit Price]
+Column 2: [Avg Product Cost]
+Title: "Margin by Brand"
+Limit: Top 12 brands
+```
+
+**22. Scatter: Rating vs Revenue by Product**
+```
+X-Axis: products[product_rating]
+Y-Axis: [Total Revenue per Product]
+Size: [Times Sold]
+Color: products[product_category]
+Detail tooltip: product_name, times_sold
 ```
 
 ---
 
-## 📅 Page 5: Time Trends & Intelligence
+## 📅 Page 5: Time Trends & Analysis
 
-**Purpose:** Temporal analysis, YoY comparisons, seasonal patterns
+**Purpose:** Temporal analysis, seasonal patterns, YoY comparisons
 
 ### Visualizations:
 
-**19. Area Chart: YTD Revenue Progression**
+**23. Area Chart: YTD Revenue Progression**
 ```
-X-Axis: DimDate[DayOfYear]
-Y-Axis: Measures[YTD Revenue]
-Color: DimDate[Year]
+X-Axis: Date[Date] or sequential date field
+Y-Axis: [YTD Revenue]
+Color: Date[Year]
 Multiple lines by year
-Location: Top
 ```
 
-**20. KPI Card: YoY Growth %**
+**24. KPI Card: YoY Growth %**
 ```
-Value: Measures[YoY Growth %]
-Trend Indicator: Dynamic
+Value: [YoY Growth %]
+Trend: Dynamic indicator
 Target: 15%
-Location: Top-left
-Format: Percentage
+Format: +/- Percentage
 ```
 
-**21. Line Chart: Monthly Revenue Pattern**
+**25. Line Chart: Monthly Revenue Pattern**
 ```
-X-Axis: DimDate[Month]
-Y-Axis: Measures[Total Revenue]
-Legend: DimDate[Year]
-Location: Center
+X-Axis: Date[Month] (1-12)
+Y-Axis: [Total Net Sales]
+Legend: Date[Year]
 Multiple year overlay
+Title: "Seasonal Revenue Pattern"
 ```
 
-**22. Column Chart: Monthly Orders with Trendline**
+**26. Column Chart: Monthly Orders with Forecast**
 ```
-X-Axis: DimDate[MonthName]
-Y-Axis: Measures[Total Orders]
-Trendline: Linear
-Location: Bottom
+X-Axis: Date[MonthName]
+Y-Axis: [Total Orders]
+Trendline: Linear regression
+Title: "Order Volume Trend"
+Current year highlight
+```
+
+**27. Table: Monthly Performance Summary**
+```
+Columns:
+  - Date[Date]
+  - [Total Orders]
+  - [Total Net Sales]
+  - [Profit]
+  - [Order Completion Rate %]
+Sort: Date descending
+Show last 12 months
 ```
 
 ---
@@ -385,61 +482,108 @@ Location: Bottom
 
 ### Financial Metrics
 ```dax
-Total Sales = SUMX(FactSales, FactSales[quantity] * FactSales[unit_price])
-Total Revenue = SUMX(FactSales, (FactSales[quantity] * FactSales[unit_price]) * (1 - FactSales[discount_percent]) + FactSales[tax_amount] + FactSales[shipping_cost])
-Total Cost = SUMX(FactSales, FactSales[quantity] * RELATED(DimProduct[product_cost]))
-Gross Profit = [Total Revenue] - [Total Cost]
-Gross Profit Margin % = IF([Total Revenue] = 0, 0, DIVIDE([Gross Profit], [Total Revenue]))
-Total Discount Amount = SUMX(FactSales, (FactSales[quantity] * FactSales[unit_price]) * FactSales[discount_percent])
-Total Tax Amount = SUM(FactSales[tax_amount])
-Total Shipping Cost = SUM(FactSales[shipping_cost])
+Total Gross Sales = SUM(sales[gross_sales])
+
+Total Net Sales = SUM(sales[net_sales])
+
+Total Product Cost = SUM(sales[product_cost])
+
+Total Profit = [Total Net Sales] - [Total Product Cost]
+
+Profit Margin % = IF([Total Net Sales] = 0, 0, DIVIDE([Total Profit], [Total Net Sales]))
+
+Total Tax Amount = SUM(sales[tax_amount])
+
+Total Shipping Cost = SUM(sales[shipping_cost])
+
+Total Discounts Given = SUM(sales[discount_amount])
+
+Average Discount % = AVERAGE(sales[discount_percentage])
 ```
 
 ### Order Metrics
 ```dax
-Total Orders = DISTINCTCOUNT(FactSales[order_id])
-Average Order Value = DIVIDE([Total Revenue], [Total Orders])
-Total Order Items = SUM(FactSales[quantity])
-Average Items per Order = DIVIDE([Total Order Items], [Total Orders])
-Completed Orders = COUNTIF(FactSales[order_status], "Completed")
-Cancelled Orders = COUNTIF(FactSales[order_status], "Cancelled")
+Total Orders = DISTINCTCOUNT(sales[order_id])
+
+Average Order Value = DIVIDE([Total Net Sales], [Total Orders])
+
+Total Quantity Sold = SUM(sales[quantity])
+
+Average Items per Order = DIVIDE([Total Quantity Sold], [Total Orders])
+
+Completed Orders = COUNTIF(sales[order_status], "Completed")
+
+Cancelled Orders = COUNTIF(sales[order_status], "Cancelled")
+
 Order Completion Rate % = IF([Total Orders] = 0, 0, DIVIDE([Completed Orders], [Total Orders]))
+
+Orders by Channel = CALCULATE([Total Orders], ALLEXCEPT(sales, sales[sales_channel]))
 ```
 
 ### Customer Metrics
 ```dax
-Total Unique Customers = DISTINCTCOUNT(FactSales[customer_id])
-Revenue per Customer = DIVIDE([Total Revenue], [Total Unique Customers])
+Total Unique Customers = DISTINCTCOUNT(sales[customer_id])
+
+Revenue per Customer = DIVIDE([Total Net Sales], [Total Unique Customers])
+
 Orders per Customer = DIVIDE([Total Orders], [Total Unique Customers])
-Customer Acquisition Cost Avg = AVERAGE(DimCustomer[customer_acquisition_cost])
-Premium Customers = CALCULATE(DISTINCTCOUNT(DimCustomer[customer_id]), DimCustomer[customer_segment] = "Premium")
-Regular Customers = CALCULATE(DISTINCTCOUNT(DimCustomer[customer_id]), DimCustomer[customer_segment] = "Regular")
+
+Avg Acquisition Cost = AVERAGE(customers[customer_acquisition_cost])
+
+Premium Customers = CALCULATE(DISTINCTCOUNT(customers[customer_id]), customers[customer_segment] = "Premium")
+
+Regular Customers = CALCULATE(DISTINCTCOUNT(customers[customer_id]), customers[customer_segment] = "Regular")
+
+Repeat Customer Rate % = CALCULATE(DISTINCTCOUNT(sales[customer_id]), sales[is_repeat_customer] = TRUE) / [Total Unique Customers]
+
+Customer Lifetime Value = AVERAGE(sales[customer_lifetime_value])
 ```
 
 ### Product Metrics
 ```dax
-Total Products = DISTINCTCOUNT(DimProduct[product_id])
-Products Sold = DISTINCTCOUNT(FactSales[product_id])
-Average Product Rating = AVERAGE(DimProduct[product_rating])
-High Rated Products = CALCULATE(DISTINCTCOUNT(DimProduct[product_id]), DimProduct[product_rating] >= 4)
-Revenue by Category = SUMX(VALUES(DimProduct[product_category]), CALCULATE([Total Revenue]))
+Total Products = DISTINCTCOUNT(products[product_id])
+
+Products Sold = DISTINCTCOUNT(sales[product_id])
+
+Average Product Rating = AVERAGE(products[product_rating])
+
+High Rated Products = CALCULATE(DISTINCTCOUNT(products[product_id]), products[product_rating] >= 4.0)
+
+Revenue by Category = SUMX(VALUES(products[product_category]), CALCULATE([Total Net Sales]))
+
+Avg Product Cost = AVERAGE(products[product_cost])
+
+Total Times Sold = SUM(product_analytics[times_sold])
 ```
 
-### Quality Metrics
+### Quality & Returns
 ```dax
-Quality Score = CALCULATE(AVERAGE(DimProduct[product_rating]))
-Order Defect Rate % = IF([Total Orders] = 0, 0, DIVIDE([Cancelled Orders], [Total Orders]))
-Average Discount % = AVERAGE(FactSales[discount_percent])
+Return Rate % = COUNTIF(sales[return_status], "Returned") / [Total Orders]
+
+Negative Sentiment % = CALCULATE(DISTINCTCOUNT(sales[order_id]), sales[review_sentiment] = "Negative") / [Total Orders]
+
+Average Customer Rating = AVERAGE(sales[customer_rating])
+
+Delivery Success Rate % = COUNTIF(sales[delivery_status], "Delivered") / [Total Orders]
+
+Average Delivery Days = AVERAGE(sales[delivery_days])
 ```
 
 ### Time Intelligence
 ```dax
-YTD Revenue = CALCULATE([Total Revenue], DATESYTD(DimDate[FullDate]))
-YTD Orders = CALCULATE([Total Orders], DATESYTD(DimDate[FullDate]))
-MTD Revenue = CALCULATE([Total Revenue], DATESMTD(DimDate[FullDate]))
-Previous Year Revenue = CALCULATE([Total Revenue], SAMEPERIODLASTYEAR(DimDate[FullDate]))
-YoY Growth % = IF([Previous Year Revenue] = 0, 0, DIVIDE(([Total Revenue] - [Previous Year Revenue]), [Previous Year Revenue]))
-Revenue Trend = CALCULATE([Total Revenue], DATEADD(DimDate[FullDate], -30, DAY))
+YTD Revenue = CALCULATE([Total Net Sales], DATESYTD(Date[Date]))
+
+YTD Orders = CALCULATE([Total Orders], DATESYTD(Date[Date]))
+
+MTD Revenue = CALCULATE([Total Net Sales], DATESMTD(Date[Date]))
+
+Previous Year Revenue = CALCULATE([Total Net Sales], SAMEPERIODLASTYEAR(Date[Date]))
+
+YoY Growth % = IF([Previous Year Revenue] = 0, 0, DIVIDE(([Total Net Sales] - [Previous Year Revenue]), [Previous Year Revenue]))
+
+Same Period Last Year = CALCULATE([Total Orders], SAMEPERIODLASTYEAR(Date[Date]))
+
+30-Day Revenue = CALCULATE([Total Net Sales], DATEADD(Date[Date], -30, DAY))
 ```
 
 ---
@@ -448,75 +592,84 @@ Revenue Trend = CALCULATE([Total Revenue], DATEADD(DimDate[FullDate], -30, DAY))
 
 | Element | Style |
 |---------|-------|
-| **Primary Color** | #2F5496 (Dark Blue) |
-| **Secondary Color** | #70AD47 (Green) |
-| **Accent Color** | #FFC000 (Gold) |
+| **Primary Color** | #1F77B4 (Blue) |
+| **Secondary Color** | #2CA02C (Green) |
+| **Accent Color** | #FF7F0E (Orange) |
 | **Background** | White (#FFFFFF) |
 | **Text Color** | #333333 (Dark Gray) |
 | **Font** | Segoe UI, 11pt |
 | **Title Font Size** | 18pt Bold |
 | **Card Values** | 24pt Bold |
+| **Currency Format** | $#,##0.00 |
+| **Percentage Format** | 0.00% |
+| **Integer Format** | #,##0 |
 
 ---
 
 ## ✅ Build Checklist
 
-- [ ] Create blank Power BI report
-- [ ] Connect to semantic model or load CSV data
-- [ ] Create 3 table relationships
-- [ ] Add 5 slicers (Date, Segment, Region, Category, Status)
-- [ ] Build Page 1: Executive Overview (6 visualizations)
-- [ ] Build Page 2: Sales Analysis (4 visualizations)
-- [ ] Build Page 3: Customer Analytics (4 visualizations)
-- [ ] Build Page 4: Product Performance (4 visualizations)
-- [ ] Build Page 5: Time Trends (4 visualizations)
+- [ ] Connect Power BI to Fabric lakehouse (githubclaude)
+- [ ] Load all 7 tables (orders, sales, customers, products, customer_analytics, product_analytics, sales_analytics)
+- [ ] Create Date dimension table
+- [ ] Establish 4 key relationships (product & customer links)
+- [ ] Create 6 slicers (Date, Segment, Region, Category, Status, Channel)
+- [ ] Build Page 1: Executive Overview (7 visualizations)
+- [ ] Build Page 2: Sales Analysis (5 visualizations)
+- [ ] Build Page 3: Customer Analytics (5 visualizations)
+- [ ] Build Page 4: Product Performance (5 visualizations)
+- [ ] Build Page 5: Time Trends & Analysis (5 visualizations)
+- [ ] Create all 40+ DAX measures
 - [ ] Format with consistent color scheme and fonts
-- [ ] Add page-level filters where applicable
+- [ ] Set appropriate number formats ($, %, 0 decimals)
+- [ ] Add conditional formatting to KPI cards
 - [ ] Test slicer interactions across all pages
 - [ ] Verify all measures calculate correctly
+- [ ] Add tooltips to all charts
 - [ ] Enable Q&A on all measures
-- [ ] Set appropriate number formats ($, %, 0 decimals)
-- [ ] Add bookmarks for drill-through navigation (optional)
+- [ ] Set up row-level security if needed
+- [ ] Configure automatic refresh schedule
 - [ ] Save as .pbix file
-- [ ] Publish to Power BI Service/Fabric workspace
+- [ ] Publish to Fabric workspace
 
 ---
 
 ## 🚀 Performance Optimization
 
-1. **Measure Groups:** Organize measures in display folders
-   ```
-   Display Folders:
-   - Financial Metrics
-   - Order Metrics
-   - Customer Metrics
-   - Product Metrics
-   - Quality Metrics
-   - Time Intelligence
-   ```
+1. **Data Source Settings:**
+   - Use Fabric lakehouse native connection
+   - Enable query folding where possible
+   - Load only necessary columns
 
-2. **Aggregation Tables:** For 100M+ row scenarios, create:
-   - Daily aggregations by Category
-   - Customer segment summaries
-   - Product performance caches
+2. **Measure Folders:**
+   - Display Folders → Financial Metrics
+   - Display Folders → Order Metrics
+   - Display Folders → Customer Metrics
+   - Display Folders → Product Metrics
+   - Display Folders → Quality Metrics
+   - Display Folders → Time Intelligence
 
-3. **Refresh Schedule:** Fabric semantic model
-   - Daily refresh at 2 AM UTC
-   - Incremental refresh for FactSales table
+3. **Refresh Strategy:**
+   - Schedule daily refresh at 2 AM UTC
+   - Incremental refresh for sales table
+   - Validate data freshness
 
-4. **Query Folding:** Ensure Power Query folds filters to source
+4. **Query Performance:**
+   - Use aggregations for 138K+ row tables
+   - Cache frequently accessed columns
+   - Optimize relationship cardinality
 
 ---
 
 ## 📚 Related Documentation
 
-- **Semantic Model:** `02_SemanticModel/SCHEMA_DOCUMENTATION.md`
-- **Data Layer:** `01_DataLayer/README.md`
-- **Build Guide:** `05_Scripts/POWER_BI_BUILD_GUIDE.md`
-- **Implementation:** `04_Documentation/Guides/POWER_BI_IMPLEMENTATION_GUIDE.md`
+- **Semantic Model Schema:** `02_SemanticModel/semantic_model.json`
+- **Lakehouse Structure:** `02_SemanticModel/SEMANTIC_MODEL_SCHEMA.md`
+- **Data Pipeline:** `05_Scripts/medallion_pipeline.py`
+- **Fabric Setup:** `FABRIC_CONNECTION_SETUP.md`
 
 ---
 
-**Last Updated:** 2026-09-12  
-**Version:** 2.0 (Updated with new semantic model)  
-**Status:** Ready to Build
+**Last Updated:** 2026-09-13  
+**Version:** 3.0 (Fabric Lakehouse Edition)  
+**Data Source:** Fabric Workspace - githubclaude Lakehouse  
+**Status:** Ready to Build ✅

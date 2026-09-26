@@ -1,0 +1,889 @@
+{
+  "workspace_id": "9c06c853-c4ee-42ad-b784-9ad3c80e7f1d",
+  "lakehouse_id": "0b4f9e6c-379c-493f-b707-0c857c8b8041",
+  "lakehouse_name": "githubclaude",
+  "exported_date": "2026-09-12T22:29:03.424343",
+  "tables": [
+    {
+      "name": "customers",
+      "type": "dimension",
+      "row_count": 25000,
+      "columns": [
+        {
+          "name": "customer_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_name",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_age",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_segment",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_city",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_state",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_country",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "region",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_postal_code",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "customer_acquisition_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "orders",
+      "type": "fact",
+      "row_count": 138116,
+      "columns": [
+        {
+          "name": "order_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "product_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "quantity",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "unit_price",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "discount_percentage",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "discount_amount",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "gross_sales",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "tax_amount",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "shipping_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "net_sales",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "product_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "profit",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "products",
+      "type": "dimension",
+      "row_count": 1175,
+      "columns": [
+        {
+          "name": "product_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "product_name",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "product_category",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "product_subcategory",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "brand",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "supplier",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "unit_price",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "product_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "product_rating",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "sales",
+      "type": "fact",
+      "row_count": 138116,
+      "columns": [
+        {
+          "name": "order_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "order_date",
+          "type": "TIMESTAMP",
+          "arrow_type": "timestamp[ns]"
+        },
+        {
+          "name": "order_time",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "order_status",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "sales_channel",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_name",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_age",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_segment",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_type",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_city",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_state",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_country",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "region",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_postal_code",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "payment_method",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "payment_status",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "currency",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "shipping_method",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "warehouse",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "delivery_days",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "estimated_delivery_days",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "delivery_status",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "return_status",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "return_reason",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_rating",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "review_sentiment",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_review",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "campaign_name",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "coupon_code",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "loyalty_points_earned",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "loyalty_points_redeemed",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "quantity",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "gross_sales",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "discount_amount",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "tax_amount",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "shipping_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "net_sales",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "product_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "profit",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "profit_margin_percentage",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "customer_lifetime_value",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "is_repeat_customer",
+          "type": "bool",
+          "arrow_type": "bool"
+        },
+        {
+          "name": "customer_order_count",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "customer_analytics",
+      "type": "dimension",
+      "row_count": 25000,
+      "columns": [
+        {
+          "name": "customer_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_name",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_age",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_segment",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_city",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_state",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_country",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "region",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_postal_code",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "customer_acquisition_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "total_orders",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "total_spent",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "avg_order_value",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "dataset_statistics",
+      "type": "dimension",
+      "row_count": 1,
+      "columns": [
+        {
+          "name": "Total Transactions",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "Total Columns",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "Total Customers",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "Total Products Used",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "Date Range",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "Total Revenue",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "Total Profit",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "Average Order Value",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "Average Rating",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "Return Rate",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "Cancellation Rate",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        }
+      ]
+    },
+    {
+      "name": "product_analytics",
+      "type": "dimension",
+      "row_count": 1175,
+      "columns": [
+        {
+          "name": "product_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "product_name",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "product_category",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "product_subcategory",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "brand",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "supplier",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "unit_price",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "product_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "product_rating",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "times_sold",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "total_quantity",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "sales_analytics",
+      "type": "dimension",
+      "row_count": 138116,
+      "columns": [
+        {
+          "name": "order_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "order_date",
+          "type": "TIMESTAMP",
+          "arrow_type": "timestamp[ns]"
+        },
+        {
+          "name": "order_time",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "order_status",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "sales_channel",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_id",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_name",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_age",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_segment",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_type",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_city",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_state",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_country",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "region",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_postal_code",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "payment_method",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "payment_status",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "currency",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "shipping_method",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "warehouse",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "delivery_days",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "estimated_delivery_days",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "delivery_status",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "return_status",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "return_reason",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_rating",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "review_sentiment",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "customer_review",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "campaign_name",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "coupon_code",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        },
+        {
+          "name": "loyalty_points_earned",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "loyalty_points_redeemed",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "quantity",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "gross_sales",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "discount_amount",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "tax_amount",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "shipping_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "net_sales",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "product_cost",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "profit",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "profit_margin_percentage",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "customer_lifetime_value",
+          "type": "DOUBLE",
+          "arrow_type": "double"
+        },
+        {
+          "name": "is_repeat_customer",
+          "type": "bool",
+          "arrow_type": "bool"
+        },
+        {
+          "name": "customer_order_count",
+          "type": "BIGINT",
+          "arrow_type": "int64"
+        },
+        {
+          "name": "month",
+          "type": "VARCHAR",
+          "arrow_type": "string"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from_table": "orders",
+      "from_column": "customer_id",
+      "to_table": "customers",
+      "to_column": "customer_id"
+    },
+    {
+      "from_table": "orders",
+      "from_column": "product_id",
+      "to_table": "products",
+      "to_column": "product_id"
+    },
+    {
+      "from_table": "sales",
+      "from_column": "customer_id",
+      "to_table": "customers",
+      "to_column": "customer_id"
+    }
+  ]
+}
